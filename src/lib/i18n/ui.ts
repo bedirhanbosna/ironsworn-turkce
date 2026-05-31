@@ -1,0 +1,240 @@
+// Arayüz etiketleri — dile göre seçilir
+const strings = {
+	tr: {
+		nav_moves:    'Hamleler',
+		nav_oracles:  'Kehanetler',
+		nav_assets:   'Yetenekler',
+		nav_npcs:     'Düşmanlar',
+		nav_truths:   'Dünya',
+		nav_rules:    'Kurallar',
+		nav_atlas:    'Bölgeler',
+		nav_docs:     'Belgeler',
+		nav_rulebook: 'Kural Kitabı',
+		home_title:   'Ironsworn Türkçe Referans',
+		home_subtitle:'Oyun sırasında hızlı bakış için tüm kurallar, hamleler ve kehanetler.',
+		home_search:  'Ara: face danger, oracle, companion...',
+		home_moves:   'Hamleler',        home_moves_d:   'Macera, ilişki, savaş, kader…',
+		home_oracles: 'Kehanetler',      home_oracles_d: 'Rastgele tablo sonuçları',
+		home_assets:  'Yetenek Kartları',home_assets_d:  'Yoldaşlar, yollar, ritüeller…',
+		home_npcs:    'Düşmanlar & OYK', home_npcs_d:    "Yaratıklar ve NPC'ler",
+		home_truths:    'Dünya Gerçekleri',home_truths_d:    "Demir Diyarlar'ı özelleştir",
+		home_rulebook:  'Kural Kitabı',   home_rulebook_d:  'Nasıl oynanır, karakter yaratma, anlatım',
+		home_rules:   'Kurallar',        home_rules_d:   'Statlar, ölçerler, debility, bonds',
+		home_atlas:   'Bölgeler',        home_atlas_d:   'Demir Diyarlar coğrafyası',
+		home_docs:    'Belgeler (PDF)',  home_docs_d:    'Kural kitabı ve referans PDF’leri',
+		loading:      'Yükleniyor…',
+		no_result:    'Sonuç bulunamadı.',
+		strong_hit:   'Güçlü Başarı',
+		weak_hit:     'Zayıf Başarı',
+		miss:         'Başarısızlık',
+		features:     'Özellikler',
+		drives:       'Güdüler',
+		tactics:      'Taktikler',
+		quest_starter:'Görev Başlangıcı',
+		truths_intro: "Demir Diyarlar'ı özelleştirmek için her kategori için bir gerçek seçin.",
+		rank_1: 'Sıradan', rank_2: 'Tehlikeli', rank_3: 'Zorlu', rank_4: 'Aşırı', rank_5: 'Destansı',
+		cat_combat_talent: 'Savaş Yeteneği', cat_companion: 'Yoldaş', cat_path: 'Yol', cat_ritual: 'Ritüel',
+		badge_move:   'Hamle', badge_oracle: 'Kehanet', badge_asset: 'Yetenek',
+		badge_npc:    'Düşman', badge_truth:  'Dünya',  badge_atlas: 'Atlas',
+		lang_btn:     'TR',
+		back:         '← Geri',
+		all_categories: 'Tüm Kategoriler',
+		view_pdf:      '📄 PDF',
+		offline_ready: 'çevrimdışı hazır',
+		download_first:'ilk açılışta indirilir',
+		open_in_pdf:   '📖 PDF\'de aç',
+		page_abbr:     'sayfa',
+		no_translation:'(çeviri henüz yok)',
+		chapters:      'Bölümler',
+
+		// Sayfa açıklamaları
+		desc_moves:   'Hamleler, belirli bir durumla karşılaştığında ne yapabileceğini tanımlar. İki d10 (zorluk) ile bir d6 (eylem) atarsın; eylem zarı + stat toplamın zorluk zarlarını geçerse başarılı olursun.',
+		desc_oracles: 'Kehanetler, belirsiz ya da rastgele bir sonuca ihtiyaç duyduğunda kullandığın tablolardır. "Ask the Oracle" hamlesiyle veya doğrudan bir tablo atarak sonucu belirle.',
+		desc_assets:  'Yetenek Kartları, karakterini özelleştiren yetenekler ve yoldaşlardır. Karakter yaratımında 3 kart seçersin; deneyim kazanarak yeni kartlar alabilir veya mevcut kartlarını geliştirebilirsin.',
+		desc_npcs:    'Demir Diyarlar\'da karşılaşabileceğin düşmanlar ve önemli karakterler. Her birinin zorluğu, güdüleri ve özel taktikleri vardır. Savaşta rakibinin güç seviyesi, sana verdiği zararı ve ilerleme izini belirler.',
+		desc_truths:  'Kampanyanın başında grubunla birlikte her kategori için bir "gerçek" seçersin. Bu seçimler Demir Diyarlar\'ın tarihini, mistisizmini ve dünya görüşünü şekillendirir — ve her seçim oyunun başlangıç noktası olabilecek görev ipuçları sunar.',
+		desc_rulebook:'Ironsworn Kural Kitabının tüm bölümleri Türkçe olarak. Nasıl oynanır, karakter yaratma, hamleler, dünya ve daha fazlası. Her bölümde orijinal PDF sayfasına doğrudan atlama.',
+		desc_rules:   'Karakter istatistiklerinin, durum ölçerlerinin ve olumsuz etkilerin (debility) özeti. Oyun sırasında "wounded ne yapıyordu?" gibi sorular için hızlı referans.',
+		desc_atlas:   'Demir Diyarlar\'ın bölgeleri — her birinin coğrafyası, öne çıkan özellikleri ve oyununu başlatabilecek görev ipuçları. Karakterinin nereden geldiğini ve dünyayı keşfederken nelerle karşılaşabileceğini belirlemek için kullan.',
+		desc_docs:    'Resmî Ironsworn PDF\'leri. datasworn verisinde bulunmayan tam kural anlatımı, karakter yaratma, oyun örnekleri ve görseller için bunları aç. Tarayıcının PDF görüntüleyicisinde açılır.',
+
+		// Kurallar sayfası alt başlıkları
+		rules_stats:      'İstatistikler',
+		rules_meters:     'Durum Ölçerleri',
+		rules_impacts:    'Olumsuz Etkiler (Debility)',
+		rules_bonds:      'Bağlar (Bonds)',
+		rules_prevents:   'iyileşmeyi engeller:',
+		rules_permanent:  'kalıcı',
+
+		// Move kategori açıklamaları
+		move_cat_adventure:    'Macera Hamlelerl',    move_cat_adventure_d:    'Tehlikeyle yüzleş, bilgi topla, yolculuğa çık ve güvenli konaklama bul.',
+		move_cat_relationship: 'İlişki Hamlelerl',    move_cat_relationship_d: 'İnsanları ikna et, bağ kur ve kendi destanını yaz.',
+		move_cat_combat:       'Savaş Hamlelerl',     move_cat_combat_d:       'Düşmanlarla çatışmaya gir, saldır, karşı koy ve savaşı bitir.',
+		move_cat_suffer:       'Acı Hamlelerl',       move_cat_suffer_d:       'Hasar ve stresi atlatmayı dene; en kötüsüyle yüzleş.',
+		move_cat_quest:        'Görev Hamlelerl',     move_cat_quest_d:        'Ant iç, dönüm noktalarına ulaş, antını tamamla ya da vazgeç.',
+		move_cat_fate:         'Kader Hamlelerl',     move_cat_fate_d:         'Bedeli öde ve kehanetin sesini dinle.',
+
+		// Asset kategori açıklamaları
+		asset_cat_companion_d:      'Yoldaşlar, sana özel avantajlar sağlayan ve üç yeteneği olan canlı kartlardır. Hasar alabilirler.',
+		asset_cat_path_d:           'Yollar, karakterinin geçmişini ve ustalık alanlarını yansıtır. Zaman içinde geliştirilebilir.',
+		asset_cat_combat_talent_d:  'Savaşta özel teknikler ve silah ustalıkları. Çatışmalarda ek avantaj sağlar.',
+		asset_cat_ritual_d:         'Demir Diyarlar\'ın karanlık mistisizmine dayanan büyülü hamleler. Bedeli vardır.',
+
+		// Oracle kategori açıklamaları
+		oracle_cat_action_and_theme_d: 'Bir eylem ve tema birleştirerek beklenmedik gelişmeler yarat.',
+		oracle_cat_character_d:        'NPC\'lerin rolü, hedefi, tanımlayıcı özelliği ve görünümü.',
+		oracle_cat_moves_d:            'Hamle sonuçlarını yorumlamak için ek oracle tabloları.',
+		oracle_cat_name_d:             'Ironlander isim listeleri — erkek, kadın ve soy isimleri.',
+		oracle_cat_place_d:            'Yer isimleri ve coğrafi özellikler.',
+		oracle_cat_settlement_d:       'Yerleşim adları, özellikleri ve sorunları.',
+		oracle_cat_turning_point_d:    'Dramatik dönüm noktaları ve beklenmedik gelişmeler.',
+
+		// Kural Kitabı bölüm başlıkları / açıklamaları
+		rb_ch1_title: 'Temel Kurallar',      rb_ch1_d: 'Oyunu nasıl oynarsın, zar mekaniği, dünya.',
+		rb_ch2_title: 'Karakterin',           rb_ch2_d: 'Karakter yaratma, statlar, yetenekler, bağlar.',
+		rb_ch3_title: 'Hamleler',             rb_ch3_d: 'Tüm hamlelerin tam açıklaması ve kullanımı.',
+		rb_ch4_title: 'Dünyan',               rb_ch4_d: 'Demir Diyarlar\'ın coğrafyası, toplulukları, tehlikeleri.',
+		rb_ch5_title: 'Düşmanlar & Karşılaşmalar', rb_ch5_d: 'Düşmanlar, canavarlar ve onlarla karşılaşma.',
+		rb_ch6_title: 'Kehanetler',           rb_ch6_d: 'Kehanet tablolarını nasıl kullanırsın.',
+		rb_ch7_title: 'Derinlemesine Oyun',   rb_ch7_d: 'Solo, co-op, rehberli oyun; kampanya ipuçları.',
+	},
+	en: {
+		nav_moves:    'Moves',
+		nav_oracles:  'Oracles',
+		nav_assets:   'Assets',
+		nav_npcs:     'Foes',
+		nav_truths:   'World',
+		nav_rules:    'Rules',
+		nav_atlas:    'Regions',
+		nav_docs:     'Documents',
+		nav_rulebook: 'Rulebook',
+		home_title:   'Ironsworn Reference',
+		home_subtitle:'Quick lookup for rules, moves, and oracles during play.',
+		home_search:  'Search: face danger, oracle, companion...',
+		home_moves:   'Moves',        home_moves_d:   'Adventure, relationship, combat, fate…',
+		home_oracles: 'Oracles',      home_oracles_d: 'Random table results',
+		home_assets:  'Assets',       home_assets_d:  'Companions, paths, rituals…',
+		home_npcs:    'Foes & NPCs',  home_npcs_d:    'Creatures and NPCs',
+		home_truths:    'World Truths',  home_truths_d:    'Customize the Ironlands',
+		home_rulebook:  'Rulebook',      home_rulebook_d:  'How to play, character creation, narrative',
+		home_rules:   'Rules',        home_rules_d:   'Stats, meters, debilities, bonds',
+		home_atlas:   'Regions',      home_atlas_d:   'Geography of the Ironlands',
+		home_docs:    'Documents (PDF)', home_docs_d:  'Rulebook and reference PDFs',
+		loading:      'Loading…',
+		no_result:    'No results found.',
+		strong_hit:   'Strong Hit',
+		weak_hit:     'Weak Hit',
+		miss:         'Miss',
+		features:     'Features',
+		drives:       'Drives',
+		tactics:      'Tactics',
+		quest_starter:'Quest Starter',
+		truths_intro: 'Choose one truth for each category to customize the Ironlands.',
+		rank_1: 'Troublesome', rank_2: 'Dangerous', rank_3: 'Formidable', rank_4: 'Extreme', rank_5: 'Epic',
+		cat_combat_talent: 'Combat Talent', cat_companion: 'Companion', cat_path: 'Path', cat_ritual: 'Ritual',
+		badge_move:   'Move', badge_oracle: 'Oracle', badge_asset: 'Asset',
+		badge_npc:    'Foe',  badge_truth:  'World',  badge_atlas: 'Atlas',
+		lang_btn:     'EN',
+		back:         '← Back',
+		all_categories: 'All Categories',
+		view_pdf:      '📄 PDF',
+		offline_ready: 'offline ready',
+		download_first:'downloads on first open',
+		open_in_pdf:   '📖 Open in PDF',
+		page_abbr:     'page',
+		no_translation:'(translation pending)',
+		chapters:      'Chapters',
+
+		desc_moves:   'Moves define what you can do when you face a specific situation. Roll a d6 (action die) + stat against two d10s (challenge dice). Beat both to get a strong hit; beat one for a weak hit; beat neither for a miss.',
+		desc_oracles: 'Oracles are random tables you consult when you need an unpredictable answer. Use the "Ask the Oracle" move or roll directly on any table to let fate decide.',
+		desc_assets:  'Assets are cards that represent your skills, background, and companions. You start with 3 and can gain more or upgrade them by spending experience earned from vows.',
+		desc_npcs:    'Foes and NPCs you may encounter across the Ironlands. Each has a rank that determines harm dealt and progress increments, plus drives and tactics that shape how they behave in the fiction.',
+		desc_truths:    'At the start of a campaign, your group chooses one truth for each category. These choices define the history, mysticism, and character of the Ironlands — and each comes with a quest starter to kick off your story.',
+		desc_rulebook:  'All chapters of the Ironsworn Rulebook in Turkish. How to play, character creation, moves, the world, and more. Each section links directly to its original PDF page.',
+		desc_rules:   'A summary of character stats, condition meters, and debilities. A quick reference for in-play questions like "what does wounded do again?".',
+		desc_atlas:   'The regions of the Ironlands — each with its geography, notable features, and quest starters to kick off your story. Use it to decide where your character is from and what you might encounter while exploring the world.',
+		desc_docs:    'Official Ironsworn PDFs. Open these for the full rules narrative, character creation, examples of play, and art that the datasworn data does not contain. They open in your browser\'s PDF viewer.',
+
+		rules_stats:      'Stats',
+		rules_meters:     'Condition Meters',
+		rules_impacts:    'Debilities',
+		rules_bonds:      'Bonds',
+		rules_prevents:   'prevents recovery:',
+		rules_permanent:  'permanent',
+
+		move_cat_adventure:    'Adventure Moves',    move_cat_adventure_d:    'Face danger, gather information, travel, and find safe haven.',
+		move_cat_relationship: 'Relationship Moves', move_cat_relationship_d: 'Compel others, forge bonds, and write your epilogue.',
+		move_cat_combat:       'Combat Moves',       move_cat_combat_d:       'Enter the fray, strike, clash, and end the fight.',
+		move_cat_suffer:       'Suffer Moves',       move_cat_suffer_d:       'Endure harm and stress; face desolation and setbacks.',
+		move_cat_quest:        'Quest Moves',        move_cat_quest_d:        'Swear vows, reach milestones, fulfill or forsake your iron vow.',
+		move_cat_fate:         'Fate Moves',         move_cat_fate_d:         'Pay the price and ask the oracle.',
+
+		asset_cat_companion_d:      'Living cards with three abilities that provide ongoing benefits. They can suffer harm.',
+		asset_cat_path_d:           'Paths reflect your background and areas of expertise. They can be upgraded over time.',
+		asset_cat_combat_talent_d:  'Special techniques and weapon mastery for use in combat. Provide extra advantages in a fight.',
+		asset_cat_ritual_d:         'Mystical moves rooted in the dark powers of the Ironlands. They come at a cost.',
+
+		rb_ch1_title: 'The Basics',           rb_ch1_d: 'How to play, dice mechanics, the world.',
+		rb_ch2_title: 'Your Character',       rb_ch2_d: 'Character creation, stats, assets, bonds.',
+		rb_ch3_title: 'Moves',                rb_ch3_d: 'Full explanations and guidance for every move.',
+		rb_ch4_title: 'Your World',           rb_ch4_d: 'Ironlands geography, communities, dangers.',
+		rb_ch5_title: 'Foes and Encounters',  rb_ch5_d: 'Enemies, monsters, and how to face them.',
+		rb_ch6_title: 'Oracles',              rb_ch6_d: 'How to use the oracle tables.',
+		rb_ch7_title: 'Gameplay in Depth',    rb_ch7_d: 'Solo, co-op, guided play; campaign tips.',
+
+		oracle_cat_action_and_theme_d: 'Combine an action and a theme to generate unexpected story twists.',
+		oracle_cat_character_d:        'NPC role, goal, descriptor, and disposition.',
+		oracle_cat_moves_d:            'Additional oracle tables to interpret move outcomes.',
+		oracle_cat_name_d:             'Ironlander name lists — male, female, and family names.',
+		oracle_cat_place_d:            'Place names and geographical features.',
+		oracle_cat_settlement_d:       'Settlement names, characteristics, and troubles.',
+		oracle_cat_turning_point_d:    'Dramatic twists and unexpected developments.',
+	}
+} as const;
+
+type Lang = 'tr' | 'en';
+type Key = keyof typeof strings.tr;
+
+export function ui(lang: Lang, key: Key): string {
+	return strings[lang][key];
+}
+
+// Move kategori slug → ui key mapping (datasworn category id sonundaki parça)
+export const moveCatMeta: Record<string, { label: keyof typeof strings.tr; desc: keyof typeof strings.tr; icon: string }> = {
+	adventure:    { label: 'move_cat_adventure',    desc: 'move_cat_adventure_d',    icon: '🗺' },
+	relationship: { label: 'move_cat_relationship', desc: 'move_cat_relationship_d', icon: '🤝' },
+	combat:       { label: 'move_cat_combat',       desc: 'move_cat_combat_d',       icon: '⚔' },
+	suffer:       { label: 'move_cat_suffer',       desc: 'move_cat_suffer_d',       icon: '💔' },
+	quest:        { label: 'move_cat_quest',        desc: 'move_cat_quest_d',        icon: '📜' },
+	fate:         { label: 'move_cat_fate',         desc: 'move_cat_fate_d',         icon: '🎲' },
+};
+
+export const assetCatMeta: Record<string, { label: keyof typeof strings.tr; desc: keyof typeof strings.tr; icon: string; slug: string }> = {
+	companion:     { label: 'cat_companion',     desc: 'asset_cat_companion_d',     icon: '🐺', slug: 'companion' },
+	path:          { label: 'cat_path',          desc: 'asset_cat_path_d',          icon: '🛤',  slug: 'path' },
+	'combat talent':{ label: 'cat_combat_talent', desc: 'asset_cat_combat_talent_d', icon: '🗡', slug: 'combat_talent' },
+	ritual:        { label: 'cat_ritual',        desc: 'asset_cat_ritual_d',        icon: '🔮', slug: 'ritual' },
+};
+
+export const oracleCatMeta: Record<string, { desc: keyof typeof strings.tr; icon: string }> = {
+	action_and_theme: { desc: 'oracle_cat_action_and_theme_d', icon: '💡' },
+	character:        { desc: 'oracle_cat_character_d',        icon: '👤' },
+	moves:            { desc: 'oracle_cat_moves_d',            icon: '⚔' },
+	name:             { desc: 'oracle_cat_name_d',             icon: '📛' },
+	place:            { desc: 'oracle_cat_place_d',            icon: '🏔' },
+	settlement:       { desc: 'oracle_cat_settlement_d',       icon: '🏘' },
+	turning_point:    { desc: 'oracle_cat_turning_point_d',    icon: '🌀' },
+};
+
+export const rulebookChapters: {
+	num: number; slug: string; icon: string;
+	titleKey: keyof typeof strings.tr; descKey: keyof typeof strings.tr;
+}[] = [
+	{ num: 1, slug: 'the-basics',           icon: '🎲', titleKey: 'rb_ch1_title', descKey: 'rb_ch1_d' },
+	{ num: 2, slug: 'your-character',       icon: '🧑', titleKey: 'rb_ch2_title', descKey: 'rb_ch2_d' },
+	{ num: 3, slug: 'moves',                icon: '⚔',  titleKey: 'rb_ch3_title', descKey: 'rb_ch3_d' },
+	{ num: 4, slug: 'your-world',           icon: '🌍', titleKey: 'rb_ch4_title', descKey: 'rb_ch4_d' },
+	{ num: 5, slug: 'foes-and-encounters',  icon: '💀', titleKey: 'rb_ch5_title', descKey: 'rb_ch5_d' },
+	{ num: 6, slug: 'oracles',              icon: '🔮', titleKey: 'rb_ch6_title', descKey: 'rb_ch6_d' },
+	{ num: 7, slug: 'gameplay-in-depth',    icon: '📖', titleKey: 'rb_ch7_title', descKey: 'rb_ch7_d' },
+];
