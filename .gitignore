@@ -25,3 +25,7 @@ vite.config.ts.timestamp-*
 # Generated data (rebuilt by copy-data)
 /static/data/
 /static/pdf/
+
+# Translated PDFs (large, regeneratable via pdf2zh)
+/pdf-out/*.pdf
+/pdf-out/*.log
