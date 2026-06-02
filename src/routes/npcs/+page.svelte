@@ -6,6 +6,8 @@
 	import { tr, trArr } from '$lib/i18n/translate.js';
 	import { ui } from '$lib/i18n/ui.js';
 	import Markdown from '$lib/components/Markdown.svelte';
+	import PdfRef from '$lib/components/PdfRef.svelte';
+	import RankBadge from '$lib/components/RankBadge.svelte';
 
 	let data: DataswornRoot | null = $state(null);
 	let overlay: Record<string, string> = $state({});
@@ -40,13 +42,16 @@
 				<button class="npc-header" onclick={() => openId = isOpen ? null : nid}>
 					<div class="npc-title">
 						<span class="npc-name">{tr(nid, 'name', npc.name, lang)}</span>
-						<span class="rank-badge">{rankUiKey[npc.rank] ? ui(lang, rankUiKey[npc.rank]) : npc.rank}</span>
+						<RankBadge rank={npc.rank} label={rankUiKey[npc.rank] ? ui(lang, rankUiKey[npc.rank]) : String(npc.rank)} />
 					</div>
 					<span class="chevron">{isOpen ? '▲' : '▼'}</span>
 				</button>
 
 				{#if isOpen}
 					<div class="npc-body">
+						{#if npc._source?.page}
+							<div class="npc-meta"><PdfRef page={npc._source.page} /></div>
+						{/if}
 						{#if npc.description}
 							<div class="section">
 								<Markdown text={tr(nid, 'description', npc.description, lang)} />
@@ -96,13 +101,10 @@
 	.npc-header:hover { background: var(--bg-3); }
 	.npc-title { display: flex; align-items: center; gap: 0.6rem; }
 	.npc-name { font-weight: 600; }
-	.rank-badge {
-		font-size: 0.7rem; padding: 0.1rem 0.4rem; border-radius: 4px;
-		background: var(--bg-4); color: var(--text-3);
-	}
 	.chevron { color: var(--text-3); font-size: 0.8rem; }
 
 	.npc-body { padding: 0.75rem 1rem; border-top: 1px solid var(--border); display: flex; flex-direction: column; gap: 0.75rem; }
+	.npc-meta { align-self: flex-end; margin-bottom: -0.25rem; }
 	.section h3 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-3); margin-bottom: 0.3rem; }
 	.section ul { list-style: disc; padding-left: 1.4em; }
 	.section ul li { color: var(--text-2); font-size: 0.9rem; }

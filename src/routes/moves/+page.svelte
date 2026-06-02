@@ -5,6 +5,7 @@
 	import { langStore } from '$lib/i18n/lang.svelte.js';
 	import { tr } from '$lib/i18n/translate.js';
 	import { ui, moveCatMeta } from '$lib/i18n/ui.js';
+	import Icon from '$lib/components/Icon.svelte';
 
 	let data: DataswornRoot | null = $state(null);
 	let overlay: Record<string, string> = $state({});
@@ -29,7 +30,7 @@
 			{@const slug = cat._id.split('/').pop() ?? ''}
 			{@const meta = moveCatMeta[slug]}
 			<a href="/moves/{slug}" class="cat-card">
-				<span class="icon">{meta?.icon ?? '⚔'}</span>
+				<span class="icon icon-medallion"><Icon name={meta?.icon ?? 'crossed-swords'} size={24} /></span>
 				<strong>{tr(cat._id, 'name', cat.name, lang)}</strong>
 				<span class="cat-desc">{meta ? ui(lang, meta.desc) : ''}</span>
 				<span class="count">{Object.keys(cat.contents).length} hamle</span>

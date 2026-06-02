@@ -1,42 +1,65 @@
-# sv
+# Ironsworn — Türkçe Referans
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+*Ironsworn* (Shawn Tomkin) masaüstü rol yapma oyununun **Türkçe topluluk fan çevirisi** ve
+etrafına kurulmuş, çevrimdışı çalışan bir **PWA** referans uygulaması. Hamleler, kehanetler,
+yetenek kartları, düşmanlar, dünya gerçekleri ve kurallar — oyun masasında hızlı bakış için
+tek yerde, Türkçe.
 
-## Creating a project
+> Ironsworn © Shawn Tomkin, **CC BY 4.0**. Bu proje resmî değildir; bir hayran çalışmasıdır.
 
-If you're seeing this, you've probably already done this step. Congrats!
+## ✦ Özellikler
+
+- **Başla** — yeni oyuncular için sürükleyici başlangıç rehberi (oyun nasıl oynanır, Demir Ant, zar mekaniği, oyunun akışı).
+- **Hamleler / Kehanetler / Yetenek Kartları / Düşmanlar / Dünya / Bölgeler / Kurallar** — datasworn verisinden Türkçe referans; arama, kategori gezinmesi, zar atılabilir kehanet tabloları.
+- **PDF sayfa atıfları** — her kural öğesinde basılı kitap sayfasına (`📖 s.NN`) doğrudan bağlantı.
+- **Kaynaklar** — `awesome-ironsworn` topluluğundan 150+ araç, üretici ve eklentinin derlenmiş, filtrelenebilir dizini.
+- **TR/EN dil değiştirme**, çevrimdışı (PWA, service worker) ve mitik karanlık-fantezi arayüz (Cinzel + Spectral fontları).
+
+## ✦ Çeviri Mimarisi
+
+İki çeviri yüzeyi vardır; ikisi de **`data/i18n/glossary.md`** sözlüğüne uyar (terim tutarlılığı esastır):
+
+1. **Datasworn arayüz metinleri** — `data/i18n/classic/strings.todo.json` (`{ "<key>": { "en", "tr" } }`).
+   `npm run build-i18n` bunlardan `tr.json` overlay'ini derler ve **token/link bütünlüğünü** denetler.
+2. **PDF kural kitabı** — `data/pdf/rulebook.json` (`text_en` → `text_tr`). *(Ayrı, sürmekte olan iş.)*
+
+Çeviri yaparken `data/i18n/glossary.md` kanoniktir; bir terimin karşılığı oradaysa birebir kullanılır.
+
+> **Çeviri notu:** Çevirilerin büyük bölümü, glossary'ye bağlı kalınarak **büyük dil modeli (LLM)
+> yardımıyla** üretilmiş ve gözden geçirilmiştir. Forklayıp kendi çevirini yapmak ya da katkıda
+> bulunmak isteyenler için `data/i18n/glossary.md`, `CLAUDE.md` ve `.claude/skills/ceviri` çeviri
+> personası/iş akışını içerir.
+
+## ✦ Geliştirme
 
 ```sh
-# create a new project
-npx sv create my-app
+npm install
+npm run dev        # geliştirme sunucusu (önce copy-data çalışır)
+npm run build      # üretim derlemesi
+npm run preview    # üretim derlemesini önizle
+npm run check      # svelte-check (tip denetimi)
 ```
 
-To recreate this project with the same configuration:
+Yardımcı betikler:
 
 ```sh
-# recreate this project
-npx sv@0.15.3 create --template minimal --types ts --install npm .
+npm run build-i18n   # strings.todo.json → tr.json (token/link denetimiyle)
+npm run fetch-source # datasworn kaynak verisini çek
+npm run extract      # çevrilecek string'leri çıkar
 ```
 
-## Developing
+## ✦ Teknoloji
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+SvelteKit 2 · Svelte 5 · TypeScript · Vite · `@sveltejs/adapter-static` · `vite-plugin-pwa`.
 
-```sh
-npm run dev
+## ✦ Lisans ve Atıf
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
+- **Ironsworn** © Shawn Tomkin — [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
+- Oyun verisi: [datasworn](https://github.com/rsek/datasworn) (rsek)
+- Kaynak dizini: [awesome-ironsworn](https://github.com/billiam/awesome-ironsworn)
+- İkonlar: [game-icons.net](https://game-icons.net) — CC BY 3.0
+- Fontlar: [Cinzel](https://fonts.google.com/specimen/Cinzel) & [Spectral](https://fonts.google.com/specimen/Spectral) — SIL Open Font License 1.1
 
-## Building
+Ayrıntılar için [LICENSE.md](LICENSE.md). Özetle: çeviri/içerik **CC BY 4.0**, özgün uygulama kodu **MIT**.
 
-To create a production version of your app:
-
-```sh
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+Çeviri ve uygulama kodu topluluk katkısıdır. Hatalı çeviri veya terim önerileri için issue/PR açabilirsin.

@@ -1,7 +1,9 @@
+import type { IconName } from '$lib/icons.js';
+
 // Referans PDF belgeleri. Dosyalar build/dev'de copy-data.js ile static/pdf/ altına kopyalanır.
 export interface DocEntry {
 	file: string;        // /pdf/<file>
-	icon: string;
+	icon: IconName;
 	title_tr: string;
 	title_en: string;
 	desc_tr: string;
@@ -13,7 +15,7 @@ export interface DocEntry {
 export const docs: DocEntry[] = [
 	{
 		file: 'rules-summary.pdf',
-		icon: '📋',
+		icon: 'scales',
 		title_tr: 'Kural Özeti',
 		title_en: 'Rules Summary',
 		desc_tr: 'Tüm hamleleri ve temel kuralları içeren iki sayfalık hızlı referans. Oyun sırasında en çok bakacağın belge.',
@@ -23,7 +25,7 @@ export const docs: DocEntry[] = [
 	},
 	{
 		file: 'playkit.pdf',
-		icon: '🎴',
+		icon: 'scroll',
 		title_tr: 'Oyun Kiti',
 		title_en: 'Play Kit',
 		desc_tr: 'Karakter sayfaları, ilerleme izleri ve yazdırılabilir oyun yardımcıları.',
@@ -33,7 +35,7 @@ export const docs: DocEntry[] = [
 	},
 	{
 		file: 'assets-printable.pdf',
-		icon: '🃏',
+		icon: 'crossed-axes',
 		title_tr: 'Yetenek Kartları (Yazdırılabilir)',
 		title_en: 'Asset Cards (Printable)',
 		desc_tr: 'Tüm yetenek kartlarının yazdırmaya uygun düzeni.',
@@ -43,7 +45,7 @@ export const docs: DocEntry[] = [
 	},
 	{
 		file: 'world-workbook.pdf',
-		icon: '🗺️',
+		icon: 'earth',
 		title_tr: 'Dünya Çalışma Kitabı',
 		title_en: 'World Workbook',
 		desc_tr: 'Dünya gerçeklerini seçmek ve kendi Demir Diyarlar\'ını oluşturmak için çalışma sayfaları.',
@@ -53,7 +55,7 @@ export const docs: DocEntry[] = [
 	},
 	{
 		file: 'rulebook.pdf',
-		icon: '📖',
+		icon: 'book',
 		title_tr: 'Tam Kural Kitabı',
 		title_en: 'Full Rulebook',
 		desc_tr: 'Eksiksiz Ironsworn kural kitabı — tüm kurallar, dünya/lore, oyun örnekleri ve görseller. Büyük dosya (~40 MB), ilk açılışta indirilir.',

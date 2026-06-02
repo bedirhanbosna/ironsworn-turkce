@@ -5,6 +5,7 @@
 	import { langStore } from '$lib/i18n/lang.svelte.js';
 	import { tr } from '$lib/i18n/translate.js';
 	import { ui, assetCatMeta } from '$lib/i18n/ui.js';
+	import Icon from '$lib/components/Icon.svelte';
 
 	let data: DataswornRoot | null = $state(null);
 	let overlay: Record<string, string> = $state({});
@@ -32,7 +33,7 @@
 			{@const slug = col.name.toLowerCase().replace(/ /g, '_')}
 			{@const meta = assetCatMeta[col.name.toLowerCase()]}
 			<a href="/assets/{slug}" class="cat-card">
-				<span class="icon">{meta?.icon ?? '📜'}</span>
+				<span class="icon icon-medallion"><Icon name={meta?.icon ?? 'scroll'} size={24} /></span>
 				<strong>{tr(col._id, 'name', col.name, lang)}</strong>
 				<span class="cat-desc">{meta ? ui(lang, meta.desc) : ''}</span>
 				<span class="count">{Object.keys(col.contents).length} kart</span>

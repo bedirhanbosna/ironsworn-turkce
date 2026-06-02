@@ -1,0 +1,13 @@
+Bu dizindeki fontlar SIL Open Font License 1.1 (OFL) altında dağıtılmaktadır.
+
+Cinzel
+  Copyright (c) Natanael Gama (ndiscovery@gmail.com)
+  https://fonts.google.com/specimen/Cinzel
+
+Spectral
+  Copyright (c) Production Type (Paris)
+  https://fonts.google.com/specimen/Spectral
+
+OFL tam metni: https://openfontlicense.org
+Bu fontlar Google Fonts'tan alınmış, latin + latin-ext alt kümeleri (Türkçe
+karakter desteği) woff2 olarak gömülmüştür. Offline PWA için yerel servis edilir.

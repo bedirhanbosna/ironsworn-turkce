@@ -5,6 +5,7 @@
 	import { langStore } from '$lib/i18n/lang.svelte.js';
 	import { tr } from '$lib/i18n/translate.js';
 	import { ui, oracleCatMeta } from '$lib/i18n/ui.js';
+	import Icon from '$lib/components/Icon.svelte';
 
 	let data: DataswornRoot | null = $state(null);
 	let overlay: Record<string, string> = $state({});
@@ -34,7 +35,7 @@
 		{#each Object.entries(data.oracles) as [key, col]}
 			{@const meta = oracleCatMeta[key]}
 			<a href="/oracles/{key}" class="cat-card">
-				<span class="icon">{meta?.icon ?? '🎲'}</span>
+				<span class="icon icon-medallion"><Icon name={meta?.icon ?? 'dice'} size={24} /></span>
 				<strong>{tr(col._id, 'name', col.name, lang)}</strong>
 				{#if meta}<span class="cat-desc">{ui(lang, meta.desc)}</span>{/if}
 				<span class="count">{tableCount(col)} tablo</span>

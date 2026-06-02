@@ -45,6 +45,7 @@ export interface MoveCategory {
 	type: string;
 	name: string;
 	contents: Record<string, Move>;
+	_source?: Source;
 }
 
 export interface Move {
@@ -228,18 +229,6 @@ export interface Source {
 	authors?: { name: string }[];
 	url?: string;
 	license?: string;
-}
-
-// --- Rulebook PDF okuyucu ---
-export interface RulebookSection {
-	id: string;
-	chapter: number;
-	chapter_slug: string;
-	heading: string;
-	level: 1 | 2;
-	pdf_page: number;
-	text_en: string;
-	text_tr: string;
 }
 
 // --- Arama / flat index tipi ---

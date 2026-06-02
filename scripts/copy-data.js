@@ -27,13 +27,6 @@ if (existsSync(i18nDir)) {
 	}
 }
 
-// Rulebook JSON (çeviri dahil kaynak artefakt)
-const rulebookJson = 'data/pdf/rulebook.json';
-if (existsSync(rulebookJson)) {
-	cpSync(rulebookJson, 'static/data/rulebook.json');
-	console.log(`  copied rulebook.json`);
-}
-
 // Referans PDF'leri (Oyun dataları/*.pdf → static/pdf/<sade-ad>.pdf)
 const pdfMap = {
 	'Ironsworn-Rulebook.pdf':           'rulebook.pdf',

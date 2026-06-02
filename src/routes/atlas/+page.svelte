@@ -6,6 +6,7 @@
 	import { tr, trArr } from '$lib/i18n/translate.js';
 	import { ui } from '$lib/i18n/ui.js';
 	import Markdown from '$lib/components/Markdown.svelte';
+	import PdfRef from '$lib/components/PdfRef.svelte';
 
 	let data: DataswornRoot | null = $state(null);
 	let overlay: Record<string, string> = $state({});
@@ -50,6 +51,9 @@
 
 				{#if isOpen}
 					<div class="region-body">
+						{#if region._source?.page}
+							<div class="region-meta"><PdfRef page={region._source.page} /></div>
+						{/if}
 						{#if region.description}
 							<div class="section">
 								<Markdown text={tr(rid, 'description', region.description, lang)} />
@@ -93,6 +97,7 @@
 	.chevron { color: var(--text-3); font-size: 0.8rem; flex-shrink: 0; }
 
 	.region-body { padding: 0.75rem 1rem; border-top: 1px solid var(--border); display: flex; flex-direction: column; gap: 0.75rem; }
+	.region-meta { align-self: flex-end; margin-bottom: -0.25rem; }
 	.section h3 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-3); margin-bottom: 0.3rem; }
 	.section ul { list-style: disc; padding-left: 1.4em; }
 	.section ul li { color: var(--text-2); font-size: 0.9rem; }

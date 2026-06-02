@@ -6,6 +6,7 @@
 	import { tr } from '$lib/i18n/translate.js';
 	import { ui } from '$lib/i18n/ui.js';
 	import Markdown from '$lib/components/Markdown.svelte';
+	import PdfRef from '$lib/components/PdfRef.svelte';
 
 	let data: DataswornRoot | null = $state(null);
 	let overlay: Record<string, string> = $state({});
@@ -33,7 +34,10 @@
 		{#each Object.values(data.truths) as truth}
 			{@const tid = truth._id}
 			<div class="truth-section" id={tid.split('/').pop()}>
-				<h2>{tr(tid, 'name', truth.name, lang)}</h2>
+				<div class="truth-head">
+					<h2>{tr(tid, 'name', truth.name, lang)}</h2>
+					<PdfRef page={truth._source?.page} />
+				</div>
 				<div class="options">
 					{#each truth.options as opt, i}
 						<div class="option">
@@ -69,7 +73,8 @@
 	.page-desc { color: var(--text-3); font-size: 0.9rem; line-height: 1.6; margin-top: 0.4rem; max-width: 680px; margin-bottom: 0.5rem; }
 	.intro { color: var(--text-3); font-size: 0.85rem; font-style: italic; margin-bottom: 1.5rem; }
 	.truths { display: flex; flex-direction: column; gap: 2rem; }
-	.truth-section h2 { border-bottom: 1px solid var(--border); padding-bottom: 0.4rem; margin-bottom: 0.75rem; }
+	.truth-head { display: flex; justify-content: space-between; align-items: baseline; gap: 0.75rem; border-bottom: 1px solid var(--border); padding-bottom: 0.4rem; margin-bottom: 0.75rem; }
+	.truth-section h2 { margin: 0; }
 	.options { display: flex; flex-direction: column; gap: 0.5rem; }
 	.option {
 		display: flex; gap: 0.9rem; align-items: flex-start;

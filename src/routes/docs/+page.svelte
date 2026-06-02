@@ -2,6 +2,7 @@
 	import { langStore } from '$lib/i18n/lang.svelte.js';
 	import { ui } from '$lib/i18n/ui.js';
 	import { docs } from '$lib/docs.js';
+	import Icon from '$lib/components/Icon.svelte';
 
 	const lang = $derived(langStore.current);
 </script>
@@ -14,7 +15,7 @@
 <div class="doc-list">
 	{#each docs as doc}
 		<a class="doc-card" href="/pdf/{doc.file}" target="_blank" rel="noopener">
-			<span class="icon">{doc.icon}</span>
+			<span class="icon icon-medallion"><Icon name={doc.icon} size={24} /></span>
 			<div class="doc-body">
 				<div class="doc-title">
 					<strong>{lang === 'tr' ? doc.title_tr : doc.title_en}</strong>

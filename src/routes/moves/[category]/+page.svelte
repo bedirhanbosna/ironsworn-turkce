@@ -7,6 +7,8 @@
 	import { tr } from '$lib/i18n/translate.js';
 	import { ui, moveCatMeta } from '$lib/i18n/ui.js';
 	import Markdown from '$lib/components/Markdown.svelte';
+	import PdfRef from '$lib/components/PdfRef.svelte';
+	import Icon from '$lib/components/Icon.svelte';
 
 	let data: DataswornRoot | null = $state(null);
 	let overlay: Record<string, string> = $state({});
@@ -34,7 +36,7 @@
 <div class="page-header">
 	<a href="/moves" class="back">{ui(lang, 'back')}</a>
 	{#if cat}
-		<h1>{meta?.icon ?? '⚔'} {tr(cat._id, 'name', cat.name, lang)}</h1>
+		<h1><Icon name={meta?.icon ?? 'crossed-swords'} size={24} /> {tr(cat._id, 'name', cat.name, lang)}</h1>
 		{#if meta}<p class="page-desc">{ui(lang, meta.desc)}</p>{/if}
 	{:else if data}
 		<h1>—</h1>
@@ -55,6 +57,9 @@
 				</button>
 				{#if isOpen}
 					<div class="move-body">
+						{#if move._source?.page}
+							<div class="move-meta"><PdfRef page={move._source.page} /></div>
+						{/if}
 						<div class="trigger">
 							<Markdown text={tr(mid, 'trigger.text', move.trigger.text, lang)} />
 						</div>
@@ -84,6 +89,7 @@
 
 <style>
 	.page-header { margin-bottom: 1.5rem; }
+	.page-header h1 { display: flex; align-items: center; gap: 0.55rem; }
 	.back { font-size: 0.85rem; color: var(--text-3); text-decoration: none; display: block; margin-bottom: 0.5rem; }
 	.back:hover { color: var(--accent); }
 	.page-desc { color: var(--text-3); font-size: 0.9rem; margin-top: 0.4rem; max-width: 680px; }
@@ -101,6 +107,7 @@
 	.chevron { color: var(--text-3); font-size: 0.8rem; }
 
 	.move-body { padding: 0.75rem 1rem 1rem; border-top: 1px solid var(--border); }
+	.move-meta { display: flex; justify-content: flex-end; margin-bottom: 0.5rem; }
 	.trigger {
 		font-style: italic; color: var(--text-2); margin-bottom: 0.75rem;
 		padding: 0.5rem 0.75rem; border-left: 3px solid var(--accent);

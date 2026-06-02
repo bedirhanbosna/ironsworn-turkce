@@ -6,6 +6,8 @@
 	import { langStore } from '$lib/i18n/lang.svelte.js';
 	import { tr } from '$lib/i18n/translate.js';
 	import { ui, oracleCatMeta } from '$lib/i18n/ui.js';
+	import PdfRef from '$lib/components/PdfRef.svelte';
+	import Icon from '$lib/components/Icon.svelte';
 
 	let data: DataswornRoot | null = $state(null);
 	let overlay: Record<string, string> = $state({});
@@ -64,7 +66,7 @@
 <div class="page-header">
 	<a href="/oracles" class="back">{ui(lang, 'back')}</a>
 	{#if col}
-		<h1>{meta?.icon ?? '🎲'} {tr(col._id, 'name', col.name, lang)}</h1>
+		<h1><Icon name={meta?.icon ?? 'dice'} size={24} /> {tr(col._id, 'name', col.name, lang)}</h1>
 		{#if meta}<p class="page-desc">{ui(lang, meta.desc)}</p>{/if}
 	{:else if data}
 		<h1>—</h1>
@@ -103,6 +105,9 @@
 
 			{#if isOpen}
 				<div class="table-body">
+					{#if table._source?.page}
+						<div class="oracle-meta"><PdfRef page={table._source.page} /></div>
+					{/if}
 					{#if table.summary}
 						<p class="summary">{tr(tid, 'summary', table.summary, lang)}</p>
 					{/if}
@@ -132,6 +137,7 @@
 
 <style>
 	.page-header { margin-bottom: 1.5rem; }
+	.page-header h1 { display: flex; align-items: center; gap: 0.55rem; }
 	.back { font-size: 0.85rem; color: var(--text-3); text-decoration: none; display: block; margin-bottom: 0.5rem; }
 	.back:hover { color: var(--accent); }
 	.page-desc { color: var(--text-3); font-size: 0.9rem; margin-top: 0.4rem; max-width: 680px; }
@@ -162,6 +168,7 @@
 	.roll-text { color: var(--text-1); }
 
 	.table-body { padding: 0.75rem; border-top: 1px solid var(--border); }
+	.oracle-meta { display: flex; justify-content: flex-end; margin-bottom: 0.5rem; }
 	.summary { color: var(--text-3); font-style: italic; margin-bottom: 0.5rem; font-size: 0.85rem; }
 	table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
 	th { text-align: left; padding: 0.3rem 0.5rem; color: var(--text-3); border-bottom: 1px solid var(--border); }

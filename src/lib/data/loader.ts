@@ -1,12 +1,10 @@
 import type {
 	DataswornRoot, Move, OracleTable, Asset, Npc, Truth,
 	MoveCategory, OracleCollection, AssetCollection, NpcCollection, SearchEntry,
-	RulebookSection
 } from './types.js';
 
 let _cache: DataswornRoot | null = null;
 let _overlay: Record<string, string> | null = null;
-let _rulebook: RulebookSection[] | null = null;
 
 export async function loadRuleset(): Promise<DataswornRoot> {
 	if (_cache) return _cache;
@@ -26,18 +24,6 @@ export async function loadOverlay(): Promise<Record<string, string>> {
 		_overlay = {};
 	}
 	return _overlay!;
-}
-
-export async function loadRulebook(): Promise<RulebookSection[]> {
-	if (_rulebook) return _rulebook;
-	try {
-		const res = await fetch('/data/rulebook.json');
-		if (!res.ok) { _rulebook = []; return []; }
-		_rulebook = await res.json();
-	} catch {
-		_rulebook = [];
-	}
-	return _rulebook!;
 }
 
 /** `_id` ile birleştirilmiş alanı overlay'den veya EN'den döndürür */

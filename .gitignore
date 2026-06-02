@@ -29,3 +29,7 @@ vite.config.ts.timestamp-*
 # Translated PDFs (large, regeneratable via pdf2zh)
 /pdf-out/*.pdf
 /pdf-out/*.log
+/pdf-out/*.txt
+
+# Claude Code — yerel (kişiye özel izinler); skill'ler ve settings.json paylaşılır
+/.claude/settings.local.json
