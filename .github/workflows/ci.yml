@@ -1,9 +1,7 @@
 name: CI
 
-# Her push ve PR'da derleme + tip denetimi (Coolify deploy'undan bağımsız doğrulama)
+# Yalnızca PR'larda derleme + tip denetimi (main push'unda Docker workflow'u derler).
 on:
-  push:
-    branches: [main]
   pull_request:
 
 jobs:
