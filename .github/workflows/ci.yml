@@ -1,0 +1,27 @@
+name: CI
+
+# Her push ve PR'da derleme + tip denetimi (Coolify deploy'undan bağımsız doğrulama)
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Bağımlılıkları kur
+        run: npm ci
+
+      - name: Derle (copy-data + vite build)
+        run: npm run build
+
+      - name: Tip denetimi (svelte-check)
+        run: npm run check
