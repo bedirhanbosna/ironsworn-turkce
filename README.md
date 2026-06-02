@@ -48,9 +48,19 @@ npm run fetch-source # datasworn kaynak verisini çek
 npm run extract      # çevrilecek string'leri çıkar
 ```
 
+## ✦ Dağıtım (Coolify)
+
+Uygulama `adapter-static` ile tamamen statiktir; depodaki **Dockerfile** (Node ile derler → nginx ile servis eder, SPA fallback) Coolify için hazırdır.
+
+1. Coolify'da **New Resource → Application → Public/Private Repository**, bu depoyu seç.
+2. Build Pack: **Dockerfile** (otomatik algılanır).
+3. **Port: 80**, domaini bağla. Push'ta Coolify otomatik yeniden derler (Actions gerekmez).
+
+Resmî PDF'ler (`Oyun dataları/`) depoda olduğundan derleme sırasında `copy-data` onları `static/pdf`'e kopyalar — ek yapılandırma gerekmez.
+
 ## ✦ Teknoloji
 
-SvelteKit 2 · Svelte 5 · TypeScript · Vite · `@sveltejs/adapter-static` · `vite-plugin-pwa`.
+SvelteKit 2 · Svelte 5 · TypeScript · Vite · `@sveltejs/adapter-static` · `vite-plugin-pwa`. Docker + nginx ile dağıtım.
 
 ## ✦ Lisans ve Atıf
 
