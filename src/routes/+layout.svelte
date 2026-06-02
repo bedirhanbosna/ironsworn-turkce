@@ -18,7 +18,8 @@
 	let menuOpen = $state(false);
 
 	const navItems = [
-		{ href: '/basla',     key: 'nav_start'     },
+		{ href: '/basla',        key: 'nav_start'     },
+		{ href: '/kural-kitabi', key: 'nav_rulebook'  },
 		{ href: '/moves',     key: 'nav_moves'     },
 		{ href: '/oracles',   key: 'nav_oracles'   },
 		{ href: '/assets',    key: 'nav_assets'    },

@@ -22,8 +22,18 @@ export default defineConfig({
 			},
 			workbox: {
 				// PDF'ler precache'e DAHİL DEĞİL (40MB Rulebook'u şişirmesin); açılınca runtime cache'lenir.
-				globPatterns: ['**/*.{js,css,html,ico,png,svg,json,woff2,webp}'],
+				// webp sayfa görselleri precache DIŞINDA (270+ sayfa install'ı şişirmesin) — runtime cache'lenir.
+				globPatterns: ['**/*.{js,css,html,ico,png,svg,json,woff2}'],
 				runtimeCaching: [
+					{
+						urlPattern: /\.webp$/,
+						handler: 'CacheFirst',
+						options: {
+							cacheName: 'page-images',
+							expiration: { maxEntries: 400 },
+							cacheableResponse: { statuses: [0, 200] }
+						}
+					},
 					{
 						urlPattern: /\.json$/,
 						handler: 'CacheFirst',

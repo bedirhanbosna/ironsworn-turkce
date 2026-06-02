@@ -176,6 +176,12 @@ olarak çevrilir. Üç kategoriye ayrılır:
 | Veiled Mountains | Örtülü Dağlar |
 | Shattered Wastes | Paramparça Çoraklıklar |
 
+### Yetenek Kartı (Asset) adları
+**Kanonik kaynak = datasworn `tr.json` çevirileri** (uygulamadaki `/assets` sayfasında görünen adlar).
+Kural kitabı sayfa çevirilerinde bir kart adı geçince **birebir o ad kullanılır** (ör. Storyweaver→Öykü Dokuyucu,
+Shield-Bearer→Kalkan Taşıyıcısı, Veteran→Kıdemli Savaşçı, Herbalist→Şifacı Otçu, Communion→Ruhla Görüşme,
+Scry→Alevde Görme, Ironclad→Zırhlı, Banner-Sworn→Sancağa Antlı). Yeni icat etme; `/assets`'e bak.
+
 ### Yaratıklar / OYK'lar — özel adlar
 Korunan (çevrilmez) kurgusal türler: **Elf, Troll, Varou, Gaunt, Basilisk, Leviathan, Wyvern**.
 

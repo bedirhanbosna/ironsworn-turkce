@@ -41,6 +41,7 @@
 	}
 
 	const cards: { href: string; icon: IconName; lk: string; dk: string }[] = [
+		{ href: '/kural-kitabi', icon: 'book',       lk: 'home_rulebook', dk: 'home_rulebook_d' },
 		{ href: '/moves',    icon: 'crossed-swords', lk: 'home_moves',    dk: 'home_moves_d'    },
 		{ href: '/oracles',  icon: 'crystal-ball',   lk: 'home_oracles',  dk: 'home_oracles_d'  },
 		{ href: '/assets',   icon: 'scroll',         lk: 'home_assets',   dk: 'home_assets_d'   },
