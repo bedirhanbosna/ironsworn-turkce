@@ -22,7 +22,7 @@ export default defineConfig({
 			},
 			workbox: {
 				// PDF'ler precache'e DAHİL DEĞİL (40MB Rulebook'u şişirmesin); açılınca runtime cache'lenir.
-				globPatterns: ['**/*.{js,css,html,ico,png,svg,json,woff2}'],
+				globPatterns: ['**/*.{js,css,html,ico,png,svg,json,woff2,webp}'],
 				runtimeCaching: [
 					{
 						urlPattern: /\.json$/,

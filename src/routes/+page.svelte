@@ -111,14 +111,14 @@
 	.hero {
 		position: relative;
 		text-align: center;
-		padding: 2.5rem 1rem 2rem;
-		margin-bottom: 2rem;
+		padding: 0.75rem 1rem 1.5rem;
+		margin: -1.25rem 0 1.5rem;  /* main'in üst dolgusunu iptal et — nav'a yapışsın */
 		overflow: hidden;
 	}
 	.hero-glow {
 		position: absolute;
-		top: -40%; left: 50%; transform: translateX(-50%);
-		width: 680px; height: 480px;
+		top: -30%; left: 50%; transform: translateX(-50%);
+		width: 680px; height: 420px;
 		background: radial-gradient(ellipse at center, var(--accent-glow) 0%, transparent 65%);
 		pointer-events: none; z-index: 0;
 	}
