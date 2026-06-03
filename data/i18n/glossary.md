@@ -153,6 +153,11 @@ sorusu sor · İki seçenek seç · Bir fikir kıvılcımı yak*. İhtimal kadem
 | Pack (düşman sürüsü) | Sürü |
 | Longhouse | Uzunev |
 | Inciting incident | Seni harekete geçiren olay |
+| Features / Drives / Tactics (OYK blokları) | Özellikler / Güdüler / Taktikler |
+| Beasts / Horrors (yaratık kategorileri) | Canavarlar / Dehşetler |
+| Mystic (OYK) | Mistik |
+| the sight (mistiğin görüsü) | görü |
+| Rank (düşman derecesi) | Derece |
 
 ---
 
@@ -163,6 +168,10 @@ sorusu sor · İki seçenek seç · Bir fikir kıvılcımı yak*. İhtimal kadem
 | The Ironlands | Demir Diyarlar |
 | Ironlander | Demir Diyar sakini |
 | The Old World | Eski Dünya |
+| Iron Priests | Demir Rahipler |
+| True Crown | Gerçek Taç |
+| black iron | kara demir |
+| the Veils (Veiled Mountains) | Örtüler |
 | Ironsworn (sıfat) | Demir-Andlı |
 | Firstborn | İlk Doğanlar |
 | Steading | Yerleşim |

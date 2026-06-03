@@ -123,6 +123,10 @@
 		background: radial-gradient(ellipse at center, var(--accent-glow) 0%, transparent 65%);
 		pointer-events: none; z-index: 0;
 	}
+	/* Tablet/mobil: hüzmeyi yatayda tam genişliğe yay (köşeler keskin bitmesin) */
+	@media (max-width: 1024px) {
+		.hero-glow { width: 100%; left: 0; transform: none; }
+	}
 	.hero > *:not(.hero-glow) { position: relative; z-index: 1; }
 
 	.eyebrow {

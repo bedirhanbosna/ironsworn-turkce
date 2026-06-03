@@ -45,6 +45,7 @@
 
 	.hero { position: relative; text-align: center; padding: 0.75rem 1rem 1.25rem; margin: -1.25rem 0 1.5rem; overflow: hidden; }
 	.hero-glow { position: absolute; top: -30%; left: 50%; transform: translateX(-50%); width: 600px; height: 380px; background: radial-gradient(ellipse at center, var(--accent-glow) 0%, transparent 65%); pointer-events: none; z-index: 0; }
+	@media (max-width: 1024px) { .hero-glow { width: 100%; left: 0; transform: none; } }
 	.hero > *:not(.hero-glow) { position: relative; z-index: 1; }
 	.eyebrow { font-size: 0.7rem; letter-spacing: 0.24em; color: var(--accent); display: inline-flex; align-items: center; gap: 0.4rem; text-transform: uppercase; margin-bottom: 0.85rem; opacity: 0.85; }
 	.hero h1 { font-family: var(--font-display); font-size: clamp(1.8rem, 4.5vw, 2.6rem); font-weight: 600; color: var(--accent); line-height: 1.15; margin-bottom: 0.7rem; text-shadow: 0 2px 22px var(--accent-glow); }

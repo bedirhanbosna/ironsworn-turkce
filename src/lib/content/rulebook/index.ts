@@ -9,8 +9,10 @@ export const chapters: Chapter[] = [
 		load: () => import('$lib/content/rulebook/karakterin.js').then((m) => m.karakterinPages) },
 	{ num: 3, slug: 'hamleler', title_en: 'Moves', title_tr: 'Hamleler', available: true,
 		load: () => import('$lib/content/rulebook/hamleler.js').then((m) => m.hamlelerPages) },
-	{ num: 4, slug: 'dunyan', title_en: 'Your World', title_tr: 'Dünyan', available: false },
-	{ num: 5, slug: 'dusmanlar', title_en: 'Foes & Encounters', title_tr: 'Düşmanlar ve Karşılaşmalar', available: false },
+	{ num: 4, slug: 'dunyan', title_en: 'Your World', title_tr: 'Dünyan', available: true,
+		load: () => import('$lib/content/rulebook/dunyan.js').then((m) => m.dunyanPages) },
+	{ num: 5, slug: 'dusmanlar', title_en: 'Foes & Encounters', title_tr: 'Düşmanlar ve Karşılaşmalar', available: true,
+		load: () => import('$lib/content/rulebook/dusmanlar.js').then((m) => m.dusmanlarPages) },
 	{ num: 6, slug: 'kehanetler', title_en: 'Oracles', title_tr: 'Kehanetler', available: false },
 	{ num: 7, slug: 'derinlemesine', title_en: 'Gameplay in Depth', title_tr: 'Derinlemesine Oyun', available: false },
 ];
