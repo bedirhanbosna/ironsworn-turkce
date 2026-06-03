@@ -497,7 +497,7 @@
 	},
 	"classic/moves/suffer/endure_harm#name": {
 		"en": "Endure Harm",
-		"tr": "Hasara Dayan"
+		"tr": "Hasara Katlan"
 	},
 	"classic/moves/suffer/endure_harm#trigger.text": {
 		"en": "When you face physical damage...",
@@ -545,7 +545,7 @@
 	},
 	"classic/moves/suffer/companion_endure_harm#name": {
 		"en": "Companion Endure Harm",
-		"tr": "Yoldaşın Hasara Dayansın"
+		"tr": "Yoldaşın Hasara Katlansın"
 	},
 	"classic/moves/suffer/companion_endure_harm#trigger.text": {
 		"en": "When your companion faces physical damage...",
@@ -569,7 +569,7 @@
 	},
 	"classic/moves/suffer/endure_stress#name": {
 		"en": "Endure Stress",
-		"tr": "Strese Dayan"
+		"tr": "Strese Katlan"
 	},
 	"classic/moves/suffer/endure_stress#trigger.text": {
 		"en": "When you face mental shock or despair...",
@@ -717,7 +717,7 @@
 	},
 	"classic/moves/quest/advance#name": {
 		"en": "Advance",
-		"tr": "Geliş"
+		"tr": "İlerle"
 	},
 	"classic/moves/quest/advance#trigger.text": {
 		"en": "When you focus on your skills, receive training, find inspiration, earn a reward, or gain a companion...",

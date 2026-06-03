@@ -36,11 +36,35 @@ Belirsizse hangi dosya/aralık olduğunu sor.
 4. **Token bütünlüğünü koru.** Her string'de EN ile TR'nin
    `[...](...)` / `{{...}}` / `__...__` token **sayısı eşit** ve link hedefleri
    **aynı** olmalı. `build-i18n.ts` bunları denetler.
-5. **Yaz.** Hedef alanları yerinde düzenle (Edit/Write). Sözlükte olmayan yeni bir
-   terim kararı verdiysen `data/i18n/glossary.md`'nin uygun tablosuna ekle.
-6. **Doğrula.** `strings.todo.json` çevirisinden sonra `npm run build-i18n`
+5. **Yaz.** Hedef alanları yerinde düzenle (Edit/Write).
+6. **Sözlüğü büyüt (ZORUNLU).** Çeviri sırasında kanonik olabilecek her terimi tespit et
+   ve `data/i18n/glossary.md`'ye ekle — bkz. aşağıdaki bölüm. (Subagent isen: bu terimleri
+   özetinde **liste halinde bildir**; ana ajan glossary'ye işler ve datasworn ile uzlaştırır.)
+7. **Doğrula.** `strings.todo.json` çevirisinden sonra `npm run build-i18n`
    çalıştır; token/link uyarısı çıkarsa düzelt. JSON'ın hâlâ geçerli ayrıştığını
    teyit et.
+
+## Sözlüğü Büyütme — Kanonik Terim Tespiti (ZORUNLU)
+
+Amaç: sözlük her çeviriyle büyüsün, aynı terim **her yerde birebir aynı** çevrilsin. Özellikle
+**Yetenek Kartları** (asset) çok tekrar eden mekanik terim içerir (buff/bonus/durum) — hepsi tutarlı olmalı.
+
+**Kanonik aday say:** birden çok yerde geçebilecek her terim →
+- Hamle/Yetenek Kartı/Kehanet/bölge/yaratık **adları**,
+- Mekanik terimler: buff/bonus/ceza, durum/etki adları, izler, sayaçlar
+  (ör. *bolster, harm, hardship, momentum, edge, impact, condition, debility, supply, bond*),
+- Tekrar eden kalıp ifadeler (ör. *take +1 momentum, mark progress, suffer -health, clear a debility,
+  reroll any dice, on a strong hit*).
+
+**Akış:**
+1. Terimi gör → `data/i18n/glossary.md`'de **ara**. Varsa **birebir** onu kullan.
+2. Yoksa: önce **datasworn'da kanonik karşılık var mı** bak (asset/move/oracle adları için
+   `tr.json` / `/assets` / `/moves` kanoniktir; uygulama o adı gösterir). Varsa onu kullan.
+3. Hâlâ yoksa: bağlama uygun, tutarlı bir Türkçe karşılık **seç**, kullan ve **glossary'nin uygun
+   tablosuna ekle** (yeni satır). Bir daha icat etme; sonraki tüm çeviriler bu satırı kullanır.
+4. Çakışma olursa **glossary kanoniktir**; datasworn yanlışsa datasworn'u glossary'ye hizala.
+
+Kararsız kaldığın aday terimleri yine de bildir — eklenip eklenmeyeceğine ana ajan/kullanıcı karar verir.
 
 ## Ham JSON modu (dosyaya yazmadan)
 Kullanıcı doğrudan bir JSON chunk verir ve "çevrilmiş JSON'ı bana ver" derse:
@@ -54,3 +78,4 @@ korunmuş, sözlük birebir uygulanmış olsun.
 - [ ] Markdown ve EN/TR token sayısı eşit
 - [ ] Yalnızca hedef alan(lar) (`tr` / `text_tr` / insan-okur değerler) değişti
 - [ ] (strings.todo.json ise) `npm run build-i18n` temiz geçti
+- [ ] Kanonik aday terimler glossary'ye eklendi / (subagent isen) özette bildirildi

@@ -137,6 +137,22 @@ olarak çevrilir. Üç kategoriye ayrılır:
 | Forsake Your Vow | Antından Vazgeç |
 | Pay the Price | Bedelini Öde |
 | Ask the Oracle | Kehanetin Sesini Dinle |
+| Battle | Muharebe |
+| Advance | İlerle |
+| Out of Supply | İkmalsiz Kal |
+| Face a Setback | Aksilikle Yüzleş |
+
+**Ask the Oracle seçenek/ihtimal etiketleri** datasworn `/moves` metnine uyar: *Bir sonuca var · Evet/hayır
+sorusu sor · İki seçenek seç · Bir fikir kıvılcımı yak*. İhtimal kademeleri ch6 (Kehanetler) ile tutarlı tutulur.
+
+### Ek terimler (kural kitabı anlatımı)
+| İngilizce | Türkçe |
+|---|---|
+| Waypoint | Durak |
+| Match (zar eşleşmesi) | Eşleşme |
+| Pack (düşman sürüsü) | Sürü |
+| Longhouse | Uzunev |
+| Inciting incident | Seni harekete geçiren olay |
 
 ---
 
