@@ -158,6 +158,11 @@ sorusu sor · İki seçenek seç · Bir fikir kıvılcımı yak*. İhtimal kadem
 | Mystic (OYK) | Mistik |
 | the sight (mistiğin görüsü) | görü |
 | Rank (düşman derecesi) | Derece |
+| Mystic Backlash | Mistik Tepki |
+| Major Plot Twist | Büyük Olay Örgüsü Sürprizi |
+| Combat Action | Muharebe Eylemi |
+| Character Goal / Descriptor | Karakter Hedefi / Tanımı |
+| Location Descriptor | Konum Tanımı |
 
 ---
 

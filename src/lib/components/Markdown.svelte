@@ -8,8 +8,34 @@
 
 	let { text, inline = false }: Props = $props();
 
+	// GFM tablolarını <table> HTML'e çevir (başlık + |---| ayraç + satırlar)
+	function tableize(raw: string): string {
+		const lines = raw.split('\n');
+		const out: string[] = [];
+		let i = 0;
+		const isSep = (s: string) => /^\s*\|?\s*:?-{2,}.*\|/.test(s) && /-/.test(s);
+		while (i < lines.length) {
+			if (lines[i].includes('|') && i + 1 < lines.length && isSep(lines[i + 1])) {
+				const cells = (s: string) => s.trim().replace(/^\||\|$/g, '').split('|').map((c) => c.trim());
+				const head = cells(lines[i]);
+				let j = i + 2;
+				const rows: string[][] = [];
+				while (j < lines.length && lines[j].includes('|') && lines[j].trim().startsWith('|')) {
+					rows.push(cells(lines[j])); j++;
+				}
+				const th = head.map((c) => `<th>${c}</th>`).join('');
+				const body = rows.map((r) => `<tr>${r.map((c) => `<td>${c}</td>`).join('')}</tr>`).join('');
+				out.push(`<table><thead><tr>${th}</tr></thead><tbody>${body}</tbody></table>`);
+				i = j;
+			} else {
+				out.push(lines[i]); i++;
+			}
+		}
+		return out.join('\n');
+	}
+
 	function parseMarkdown(raw: string): string {
-		return raw
+		return tableize(raw)
 			// datasworn id: linkleri → uygulama içi navigasyon
 			.replace(/\[([^\]]+)\]\(id:([^)]+)\)/g, (_, label, id) => {
 				const href = idToHref(id);
@@ -33,11 +59,11 @@
 			.replace(/(?<![_])_([^_]+)_(?![_])/g, '<em>$1</em>')
 			// Paragraflar
 			.replace(/\n\n+/g, '</p><p>')
-			.replace(/^(?!<[uolph])/, '<p>')
+			.replace(/^(?!<(?:table|[uolph]))/, '<p>')
 			.replace(/(?<![>])$/, '</p>')
 			// Blok öğeleri yanlış <p> sarmasından kurtar
-			.replace(/<p>(<(?:h4|h5|ul|ol)>)/g, '$1')
-			.replace(/(<\/(?:h4|h5|ul|ol)>)<\/p>/g, '$1')
+			.replace(/<p>(<(?:h4|h5|ul|ol|table)>)/g, '$1')
+			.replace(/(<\/(?:h4|h5|ul|ol|table)>)<\/p>/g, '$1')
 			.replace(/<p><\/p>/g, '');
 	}
 
@@ -89,6 +115,9 @@
 	.isl-md :global(h4) { font-family: var(--font-display); font-size: 1.02rem; color: var(--accent); margin: 0.9em 0 0.35em; }
 	.isl-md :global(h5) { font-size: 0.9rem; color: var(--text-1); margin: 0.7em 0 0.3em; text-transform: uppercase; letter-spacing: 0.04em; }
 	.isl-md :global(h4):first-child, .isl-md :global(h5):first-child { margin-top: 0; }
+	.isl-md :global(table) { width: 100%; border-collapse: collapse; font-size: 0.85rem; margin: 0.5em 0; }
+	.isl-md :global(th), .isl-md :global(td) { border: 1px solid var(--border); padding: 0.25rem 0.5rem; text-align: left; }
+	.isl-md :global(th) { background: var(--bg-3); color: var(--text-1); font-weight: 600; }
 	.isl-md :global(ul) { padding-left: 1.4em; margin: 0.4em 0; }
 	.isl-md :global(li) { margin-bottom: 0.2em; }
 	.isl-md :global(p) { margin: 0.4em 0; }

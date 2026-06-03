@@ -13,7 +13,8 @@ export const chapters: Chapter[] = [
 		load: () => import('$lib/content/rulebook/dunyan.js').then((m) => m.dunyanPages) },
 	{ num: 5, slug: 'dusmanlar', title_en: 'Foes & Encounters', title_tr: 'Düşmanlar ve Karşılaşmalar', available: true,
 		load: () => import('$lib/content/rulebook/dusmanlar.js').then((m) => m.dusmanlarPages) },
-	{ num: 6, slug: 'kehanetler', title_en: 'Oracles', title_tr: 'Kehanetler', available: false },
+	{ num: 6, slug: 'kehanetler', title_en: 'Oracles', title_tr: 'Kehanetler', available: true,
+		load: () => import('$lib/content/rulebook/kehanetler.js').then((m) => m.kehanetlerPages) },
 	{ num: 7, slug: 'derinlemesine', title_en: 'Gameplay in Depth', title_tr: 'Derinlemesine Oyun', available: false },
 ];
 
