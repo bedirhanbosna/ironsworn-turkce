@@ -5,6 +5,7 @@
 	import { langStore } from '$lib/i18n/lang.svelte.js';
 	import { tr, trArr } from '$lib/i18n/translate.js';
 	import { ui } from '$lib/i18n/ui.js';
+	import { stripMarkdown } from '$lib/text.js';
 	import Markdown from '$lib/components/Markdown.svelte';
 	import PdfRef from '$lib/components/PdfRef.svelte';
 
@@ -44,7 +45,7 @@
 				<button class="region-header" onclick={() => openId = isOpen ? null : rid}>
 					<div class="region-title">
 						<span class="region-name">{tr(rid, 'name', region.name, lang)}</span>
-						{#if region.summary}<span class="region-summary">{tr(rid, 'summary', region.summary, lang)}</span>{/if}
+						{#if region.summary}<span class="region-summary">{stripMarkdown(tr(rid, 'summary', region.summary, lang))}</span>{/if}
 					</div>
 					<span class="chevron">{isOpen ? '▲' : '▼'}</span>
 				</button>
@@ -62,7 +63,7 @@
 						{#if region.features?.length}
 							<div class="section">
 								<h3>{ui(lang, 'features')}</h3>
-								<ul>{#each trArr(rid, 'features', region.features, lang) as f}<li>{f}</li>{/each}</ul>
+								<ul>{#each trArr(rid, 'features', region.features, lang) as f}<li>{stripMarkdown(f)}</li>{/each}</ul>
 							</div>
 						{/if}
 						{#if region.quest_starter}

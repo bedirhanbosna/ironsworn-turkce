@@ -11,18 +11,31 @@
 	let activeSlug = $state('temel-kurallar');
 	let pages = $state<RulebookPage[]>([]);
 	let loading = $state(true);
+	let initialPage = $state<number | undefined>(undefined);
 
-	async function select(slug: string) {
+	async function select(slug: string, scrollTop = true) {
 		const ch = getChapter(slug);
 		if (!ch?.available || !ch.load) return;
+		if (scrollTop) initialPage = undefined; // manuel seçimde derin-link hedefini temizle
 		activeSlug = slug;
 		loading = true;
 		pages = await ch.load();
 		loading = false;
-		if (typeof window !== 'undefined') window.scrollTo({ top: 0, behavior: 'smooth' });
+		if (scrollTop && typeof window !== 'undefined') window.scrollTo({ top: 0, behavior: 'smooth' });
 	}
 
-	onMount(() => select('temel-kurallar'));
+	onMount(() => {
+		// Arama derin-linki: ?ch=<slug>&p=<page> → o bölümü aç ve sayfaya kay
+		const params = new URLSearchParams(location.search);
+		const ch = params.get('ch');
+		const p = Number(params.get('p'));
+		if (ch && getChapter(ch)?.available) {
+			initialPage = p > 0 ? p : undefined;
+			select(ch, false);
+		} else {
+			select('temel-kurallar');
+		}
+	});
 </script>
 
 <div class="page-header">
@@ -53,7 +66,7 @@
 	<p class="hint">{ui(lang, 'loading')}</p>
 {:else}
 	{#key activeSlug}
-		<RulebookReader {pages} />
+		<RulebookReader {pages} {initialPage} />
 	{/key}
 {/if}
 

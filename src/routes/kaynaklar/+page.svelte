@@ -2,17 +2,18 @@
 	import { langStore } from '$lib/i18n/lang.svelte.js';
 	import { ui } from '$lib/i18n/ui.js';
 	import { resourceSections } from '$lib/content/resources.js';
+	import { normalizeSearch } from '$lib/data/normalize.js';
 	import Icon from '$lib/components/Icon.svelte';
 
 	const lang = $derived(langStore.current);
 	let query = $state('');
 
 	const filtered = $derived.by(() => {
-		const q = query.trim().toLowerCase();
-		if (!q) return resourceSections;
+		const nq = normalizeSearch(query.trim());
+		if (!nq) return resourceSections;
 		return resourceSections
 			.map(s => ({ ...s, items: s.items.filter(i =>
-				i.name.toLowerCase().includes(q) || i.desc.toLowerCase().includes(q)) }))
+				normalizeSearch(i.name).includes(nq) || normalizeSearch(i.desc).includes(nq)) }))
 			.filter(s => s.items.length > 0);
 	});
 

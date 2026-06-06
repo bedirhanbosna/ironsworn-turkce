@@ -232,7 +232,7 @@ export interface Source {
 }
 
 // --- Arama / flat index tipi ---
-export type SearchableType = 'move' | 'oracle' | 'asset' | 'npc' | 'truth' | 'atlas';
+export type SearchableType = 'move' | 'oracle' | 'asset' | 'npc' | 'truth' | 'atlas' | 'page';
 
 export interface SearchEntry {
 	id: string;
@@ -241,4 +241,17 @@ export interface SearchEntry {
 	category?: string;
 	/** kısa özet/preview metin */
 	preview?: string;
+	/** normalize edilmiş arama haystack'i (EN+TR), büyük/küçük+aksan duyarsız */
+	search: string;
+	/** sayfa sonuçları için doğrudan hedef (varsa entryHref yerine kullanılır) */
+	href?: string;
+}
+
+// Kural kitabı/belge sayfa başlık index'i (build-time üretilir; static/data/content_index.json)
+export interface ContentIndexEntry {
+	ctx: 'rulebook' | 'doc';
+	slug: string;
+	page: number;
+	title_en: string;
+	title_tr: string;
 }

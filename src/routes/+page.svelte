@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { loadRuleset, loadOverlay, buildSearchIndex } from '$lib/data/loader.js';
+	import { loadRuleset, loadOverlay, loadContentIndex, buildSearchIndex } from '$lib/data/loader.js';
+	import { normalizeSearch } from '$lib/data/normalize.js';
 	import type { SearchEntry } from '$lib/data/types.js';
 	import { langStore } from '$lib/i18n/lang.svelte.js';
 	import { ui } from '$lib/i18n/ui.js';
@@ -12,32 +13,29 @@
 	let loading = $state(true);
 
 	onMount(async () => {
-		const [data, overlay] = await Promise.all([loadRuleset(), loadOverlay()]);
-		allEntries = buildSearchIndex(data, overlay);
+		const [data, overlay, contentIndex] = await Promise.all([loadRuleset(), loadOverlay(), loadContentIndex()]);
+		allEntries = buildSearchIndex(data, overlay, contentIndex);
 		loading = false;
 	});
 
 	const lang = $derived(langStore.current);
 
-	const typeBadgeKey: Record<string, 'badge_move'|'badge_oracle'|'badge_asset'|'badge_npc'|'badge_truth'|'badge_atlas'> = {
+	const typeBadgeKey: Record<string, 'badge_move'|'badge_oracle'|'badge_asset'|'badge_npc'|'badge_truth'|'badge_atlas'|'badge_page'> = {
 		move: 'badge_move', oracle: 'badge_oracle', asset: 'badge_asset',
-		npc: 'badge_npc', truth: 'badge_truth', atlas: 'badge_atlas'
+		npc: 'badge_npc', truth: 'badge_truth', atlas: 'badge_atlas', page: 'badge_page'
 	};
 	const typeHref: Record<string, string> = {
 		move: '/moves', oracle: '/oracles', asset: '/assets', npc: '/npcs', truth: '/truths', atlas: '/atlas'
 	};
 
 	const results = $derived.by(() => {
-		const q = query.trim().toLowerCase();
-		if (!q || q.length < 2) return [];
-		return allEntries.filter(e =>
-			e.name.toLowerCase().includes(q) ||
-			(e.preview?.toLowerCase().includes(q))
-		).slice(0, 40);
+		const nq = normalizeSearch(query.trim());
+		if (nq.length < 2) return [];
+		return allEntries.filter(e => e.search.includes(nq)).slice(0, 40);
 	});
 
 	function entryHref(e: SearchEntry) {
-		return `${typeHref[e.type] ?? '/'}#${e.id.split('/').pop()}`;
+		return e.href ?? `${typeHref[e.type] ?? '/'}#${e.id.split('/').pop()}`;
 	}
 
 	const cards: { href: string; icon: IconName; lk: string; dk: string }[] = [
@@ -184,6 +182,7 @@
 	.badge-npc     { background: #4a2a2a; color: #e08080; }
 	.badge-truth   { background: #3a2a4a; color: #b890d8; }
 	.badge-atlas   { background: #2a4a4a; color: #70c8c8; }
+	.badge-page    { background: #3a3320; color: #d8c890; }
 	.name { font-weight: 600; }
 	.cat { font-size: 0.8rem; color: var(--text-3); }
 	.preview { font-size: 0.8rem; color: var(--text-3); width: 100%; margin-top: 0.1rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }

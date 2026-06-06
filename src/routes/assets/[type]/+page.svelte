@@ -6,6 +6,7 @@
 	import { langStore } from '$lib/i18n/lang.svelte.js';
 	import { tr } from '$lib/i18n/translate.js';
 	import { ui, assetCatMeta } from '$lib/i18n/ui.js';
+	import { stripMarkdown } from '$lib/text.js';
 	import Markdown from '$lib/components/Markdown.svelte';
 	import PdfRef from '$lib/components/PdfRef.svelte';
 	import Icon from '$lib/components/Icon.svelte';
@@ -54,7 +55,7 @@
 					<PdfRef page={asset._source?.page} />
 				</div>
 				{#if asset.requirement}
-					<p class="requirement">{tr(aid, 'requirement', asset.requirement, lang)}</p>
+					<p class="requirement">{stripMarkdown(tr(aid, 'requirement', asset.requirement, lang))}</p>
 				{/if}
 				<ul class="abilities">
 					{#each asset.abilities as ab, i}

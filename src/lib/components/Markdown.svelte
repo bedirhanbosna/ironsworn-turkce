@@ -84,7 +84,22 @@
 			case 'truths':  return `/truths#${anchor}`;
 			case 'atlas':   return `/atlas#${anchor}`;
 			case 'rules':   return '/rules';
-			default:        return `/#${id}`;
+			// koleksiyon (kategori) linkleri → ilgili kategori sayfasına
+			case 'collections': {
+				const sub = parts[1];
+				const slug = parts[2];
+				switch (sub) {
+					case 'moves':   return slug ? `/moves/${slug}` : '/moves';
+					case 'oracles': return slug ? `/oracles/${slug}` : '/oracles';
+					case 'assets':  return slug ? `/assets/${slug}` : '/assets';
+					case 'npcs':    return '/npcs';
+					case 'atlas':   return '/atlas';
+					default:        return '/';
+				}
+			}
+			// delve içeriği bu uygulamada yok → en yakın yüzeye yönlendir
+			case 'delve':   return '/moves';
+			default:        return '/';
 		}
 	}
 

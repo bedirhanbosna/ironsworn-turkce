@@ -6,6 +6,7 @@
 	import { langStore } from '$lib/i18n/lang.svelte.js';
 	import { tr } from '$lib/i18n/translate.js';
 	import { ui, oracleCatMeta } from '$lib/i18n/ui.js';
+	import { stripMarkdown } from '$lib/text.js';
 	import PdfRef from '$lib/components/PdfRef.svelte';
 	import Icon from '$lib/components/Icon.svelte';
 
@@ -99,7 +100,7 @@
 			{#if roll}
 				<div class="roll-result">
 					<span class="roll-val">{roll.value}</span>
-					<span class="roll-text">{roll.text}</span>
+					<span class="roll-text">{stripMarkdown(roll.text)}</span>
 				</div>
 			{/if}
 
@@ -109,7 +110,7 @@
 						<div class="oracle-meta"><PdfRef page={table._source.page} /></div>
 					{/if}
 					{#if table.summary}
-						<p class="summary">{tr(tid, 'summary', table.summary, lang)}</p>
+						<p class="summary">{stripMarkdown(tr(tid, 'summary', table.summary, lang))}</p>
 					{/if}
 					<table>
 						<thead>
@@ -124,7 +125,7 @@
 								{@const isRolled = roll?.text === rowText}
 								<tr class:highlighted={isRolled}>
 									<td class="range">{row.min === row.max ? row.min : `${row.min}–${row.max}`}</td>
-									<td>{rowText}</td>
+									<td>{stripMarkdown(rowText)}</td>
 								</tr>
 							{/each}
 						</tbody>

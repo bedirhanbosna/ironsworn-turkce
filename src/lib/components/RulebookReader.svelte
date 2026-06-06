@@ -9,7 +9,7 @@
 	import CharacterSheet from '$lib/components/diagrams/CharacterSheet.svelte';
 	import type { RulebookPage } from '$lib/content/rulebook/types.js';
 
-	let { pages }: { pages: RulebookPage[] } = $props();
+	let { pages, initialPage }: { pages: RulebookPage[]; initialPage?: number } = $props();
 
 	const lang = $derived(langStore.current);
 	let openImgs = $state<Record<number, boolean>>({});
@@ -25,7 +25,11 @@
 			{ rootMargin: '-15% 0px -75% 0px' }
 		);
 		const t = setTimeout(() => document.querySelectorAll('.pg[id]').forEach((el) => obs.observe(el)), 200);
-		return () => { obs.disconnect(); clearTimeout(t); };
+		// Derin-link: arama sonucundan gelen hedef sayfaya kaydır
+		const tp = initialPage != null
+			? setTimeout(() => { activePage = initialPage; scrollTo(initialPage); }, 280)
+			: undefined;
+		return () => { obs.disconnect(); clearTimeout(t); if (tp) clearTimeout(tp); };
 	});
 </script>
 

@@ -5,6 +5,7 @@
 	import { langStore } from '$lib/i18n/lang.svelte.js';
 	import { tr, trArr } from '$lib/i18n/translate.js';
 	import { ui } from '$lib/i18n/ui.js';
+	import { stripMarkdown } from '$lib/text.js';
 	import Markdown from '$lib/components/Markdown.svelte';
 	import PdfRef from '$lib/components/PdfRef.svelte';
 	import RankBadge from '$lib/components/RankBadge.svelte';
@@ -60,7 +61,7 @@
 						{#if npc.features.length}
 							<div class="section">
 								<h3>{ui(lang, 'features')}</h3>
-								<ul>{#each trArr(nid, 'features', npc.features, lang) as f}<li>{f}</li>{/each}</ul>
+								<ul>{#each trArr(nid, 'features', npc.features, lang) as f}<li>{stripMarkdown(f)}</li>{/each}</ul>
 							</div>
 						{/if}
 						{#if npc.drives.length}
