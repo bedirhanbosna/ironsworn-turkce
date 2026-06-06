@@ -8,8 +8,10 @@
 		"build": "npm run copy-data && npm run build-content-index && vite build",
 		"preview": "vite preview",
 		"prepare": "svelte-kit sync || echo ''",
-		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json && vitest run",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
+		"test": "vitest run",
+		"test:watch": "vitest",
 		"copy-data": "node scripts/copy-data.js",
 		"build-content-index": "npx tsx scripts/build-content-index.ts",
 		"fetch-source": "npx tsx scripts/fetch-source.ts",
@@ -28,6 +30,7 @@
 		"typescript": "^6.0.2",
 		"vite": "^8.0.7",
 		"vite-plugin-pwa": "^1.3.0",
+		"vitest": "^4.1.8",
 		"workbox-window": "^7.4.1"
 	}
 }
