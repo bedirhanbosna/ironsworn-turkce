@@ -17,20 +17,25 @@
 	const lang = $derived(langStore.current);
 	let menuOpen = $state(false);
 
-	const navItems = [
-		{ href: '/basla',        key: 'nav_start'     },
-		{ href: '/kural-kitabi', key: 'nav_rulebook'  },
-		{ href: '/belgeler',  key: 'nav_documents' },
-		{ href: '/moves',     key: 'nav_moves'     },
-		{ href: '/oracles',   key: 'nav_oracles'   },
-		{ href: '/assets',    key: 'nav_assets'    },
-		{ href: '/npcs',      key: 'nav_npcs'      },
-		{ href: '/truths',    key: 'nav_truths'    },
-		{ href: '/rules',     key: 'nav_rules'     },
-		{ href: '/atlas',     key: 'nav_atlas'     },
-		{ href: '/docs',      key: 'nav_docs'      },
-		{ href: '/kaynaklar', key: 'nav_resources' },
+	// Nav, etkileşim moduna göre gruplanır: Oku (anlatı) · Başvuru (data) · Kaynaklar (dış).
+	const navGroups = [
+		{ key: 'navg_read', items: [
+			{ href: '/basla',        key: 'nav_start'     },
+			{ href: '/kural-kitabi', key: 'nav_rulebook'  },
+			{ href: '/belgeler',     key: 'nav_documents' },
+		] },
+		{ key: 'navg_reference', items: [
+			{ href: '/moves',   key: 'nav_moves'   },
+			{ href: '/oracles', key: 'nav_oracles' },
+			{ href: '/assets',  key: 'nav_assets'  },
+			{ href: '/npcs',    key: 'nav_npcs'    },
+			{ href: '/rules',   key: 'nav_rules'   },
+			{ href: '/truths',  key: 'nav_truths'  },
+			{ href: '/atlas',   key: 'nav_atlas'   },
+		] },
 	] as const;
+	// Tek başına dış öğe (göm sonrası "Dosya" grubu yalnız buna iner)
+	const navTrailing = [ { href: '/kaynaklar', key: 'nav_resources' } ] as const;
 
 	const currentPath = $derived($page.url.pathname);
 	// Rota değişince mobil menüyü kapat
@@ -47,9 +52,19 @@
 		<a href="/" class="logo"><Icon name="crossed-swords" size={18} /> Ironsworn</a>
 
 		<nav class:open={menuOpen} id="main-nav">
-			{#each navItems as item}
-				<a href={item.href} class:active={currentPath.startsWith(item.href)} onclick={() => (menuOpen = false)}>{ui(lang, item.key)}</a>
+			{#each navGroups as group}
+				<div class="nav-group">
+					<span class="nav-group-label">{ui(lang, group.key)}</span>
+					{#each group.items as item}
+						<a href={item.href} class:active={currentPath.startsWith(item.href)} onclick={() => (menuOpen = false)}>{ui(lang, item.key)}</a>
+					{/each}
+				</div>
 			{/each}
+			<div class="nav-group nav-trailing">
+				{#each navTrailing as item}
+					<a href={item.href} class:active={currentPath.startsWith(item.href)} onclick={() => (menuOpen = false)}>{ui(lang, item.key)}</a>
+				{/each}
+			</div>
 		</nav>
 
 		<div class="header-actions">
@@ -125,10 +140,18 @@
 	}
 	nav {
 		display: flex;
-		gap: 0.15rem;
+		align-items: center;
+		gap: 0.3rem 0.7rem;
 		flex-wrap: wrap;
 		flex: 1;
 	}
+	.nav-group { display: inline-flex; align-items: center; gap: 0.1rem; }
+	.nav-group-label {
+		font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.14em;
+		color: var(--text-3); opacity: 0.7; margin-right: 0.25rem;
+		white-space: nowrap; user-select: none;
+	}
+	.nav-trailing { border-left: 1px solid var(--border); padding-left: 0.7rem; }
 	nav a {
 		padding: 0.3rem 0.7rem;
 		border-radius: 6px;
@@ -185,6 +208,9 @@
 		}
 		nav.open { display: flex; }
 		nav a { padding: 0.6rem 0.8rem; font-size: 0.95rem; }
+		.nav-group { flex-direction: column; align-items: stretch; gap: 0; width: 100%; }
+		.nav-group-label { margin: 0.5rem 0.8rem 0.2rem; opacity: 0.6; }
+		.nav-trailing { border-left: none; border-top: 1px solid var(--border); padding-left: 0; margin-top: 0.3rem; padding-top: 0.3rem; }
 		nav a.active::after {
 			left: 0; right: auto; top: 0.5rem; bottom: 0.5rem;
 			width: 3px; height: auto;

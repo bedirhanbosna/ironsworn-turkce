@@ -14,6 +14,8 @@
 	let overlay: Record<string, string> = $state({});
 	let openId = $state<string | null>(null);
 	let rolls = $state<Record<string, { value: number; text: string }>>({});
+	// Ekran okuyucu için kalıcı canlı bölge metni (son zar sonucu)
+	let lastAnnounce = $state('');
 
 	onMount(async () => {
 		[data, overlay] = await Promise.all([loadRuleset(), loadOverlay()]);
@@ -59,7 +61,9 @@
 		const row = table.rows.find(r => total >= (r.min ?? 0) && total <= (r.max ?? 100));
 		if (row) {
 			const idx = table.rows.indexOf(row);
-			rolls[table._id] = { value: total, text: overlay[`${table._id}#rows.${idx}.text`] ?? row.text };
+			const text = overlay[`${table._id}#rows.${idx}.text`] ?? row.text;
+			rolls[table._id] = { value: total, text };
+			lastAnnounce = `${tr(table._id, 'name', table.name, lang)}: ${total}. ${stripMarkdown(text)}`;
 		}
 	}
 </script>
@@ -75,6 +79,8 @@
 		<p class="hint">{ui(lang, 'loading')}</p>
 	{/if}
 </div>
+
+<div class="sr-only" aria-live="polite" aria-atomic="true">{lastAnnounce}</div>
 
 {#if col && tables.length > 0}
 	{#each tables as { label, table }}
@@ -137,6 +143,10 @@
 {/if}
 
 <style>
+	.sr-only {
+		position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+		overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+	}
 	.page-header { margin-bottom: 1.5rem; }
 	.page-header h1 { display: flex; align-items: center; gap: 0.55rem; }
 	.back { font-size: 0.85rem; color: var(--text-3); text-decoration: none; display: block; margin-bottom: 0.5rem; }

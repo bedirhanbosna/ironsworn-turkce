@@ -5,6 +5,7 @@
 	import Icon from '$lib/components/Icon.svelte';
 	import RulebookReader from '$lib/components/RulebookReader.svelte';
 	import { documents, getDoc } from '$lib/content/docs/index.js';
+	import { docs } from '$lib/docs.js';
 	import type { RulebookPage } from '$lib/content/rulebook/types.js';
 
 	const lang = $derived(langStore.current);
@@ -87,6 +88,27 @@
 	{/key}
 {/if}
 
+<section class="all-pdfs">
+	<h2>{ui(lang, 'docs_all_pdfs')}</h2>
+	<div class="doc-list">
+		{#each docs as doc}
+			<a class="doc-card" href="/pdf/{doc.file}" target="_blank" rel="noopener">
+				<span class="doc-icon"><Icon name={doc.icon} size={22} /></span>
+				<div class="doc-body">
+					<div class="doc-title">
+						<strong>{lang === 'tr' ? doc.title_tr : doc.title_en}</strong>
+						<span class="size">{doc.size}</span>
+					</div>
+					<span class="doc-desc">{lang === 'tr' ? doc.desc_tr : doc.desc_en}</span>
+					<span class="pdf-badge" class:on={doc.offline}>
+						{doc.offline ? `🔒 ${ui(lang, 'offline_ready')}` : `☁ ${ui(lang, 'download_first')}`}
+					</span>
+				</div>
+			</a>
+		{/each}
+	</div>
+</section>
+
 <style>
 	.page-header { margin-bottom: 1rem; }
 	.page-header h1 { display: flex; align-items: center; gap: 0.55rem; }
@@ -116,4 +138,28 @@
 	.ch.active { background: var(--bg-3); border-color: var(--accent); color: var(--accent); }
 	.ch.soon { opacity: 0.5; cursor: default; }
 	.ch-soon { font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-3); border: 1px solid var(--border); border-radius: 4px; padding: 0 0.3rem; }
+
+	/* Tüm PDF'ler indirme şeridi (eski /docs sayfasından taşındı) */
+	.all-pdfs { margin-top: 2.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border); }
+	.all-pdfs h2 { font-family: var(--font-display); font-size: 1.15rem; margin: 0 0 1rem; }
+	.doc-list { display: flex; flex-direction: column; gap: 0.6rem; }
+	.doc-card {
+		display: flex; gap: 0.9rem; align-items: flex-start; padding: 0.9rem 1rem;
+		background: var(--bg-2); border: 1px solid var(--border); border-radius: var(--radius);
+		text-decoration: none; color: var(--text-2);
+		transition: border-color 0.15s, background 0.15s;
+	}
+	.doc-card:hover { background: var(--bg-3); border-color: var(--accent); }
+	.doc-icon { color: var(--accent); line-height: 1; flex-shrink: 0; }
+	.doc-body { flex: 1; display: flex; flex-direction: column; gap: 0.3rem; min-width: 0; }
+	.doc-title { display: flex; align-items: baseline; gap: 0.6rem; }
+	.doc-title strong { font-size: 1rem; color: var(--text-1); }
+	.size { font-size: 0.75rem; color: var(--text-3); }
+	.doc-desc { font-size: 0.85rem; color: var(--text-3); line-height: 1.5; }
+	.pdf-badge {
+		align-self: flex-start; margin-top: 0.2rem;
+		font-size: 0.7rem; padding: 0.1rem 0.45rem; border-radius: 4px;
+		background: var(--bg-4); color: var(--text-3);
+	}
+	.pdf-badge.on { color: #7ec89a; }
 </style>

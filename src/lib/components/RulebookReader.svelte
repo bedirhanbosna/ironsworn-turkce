@@ -14,6 +14,7 @@
 	const lang = $derived(langStore.current);
 	let openImgs = $state<Record<number, boolean>>({});
 	let activePage = $state(0);
+	let tocOpen = $state(false); // mobilde İçindekiler açık mı
 
 	function scrollTo(page: number) {
 		document.getElementById(`s${page}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -35,13 +36,18 @@
 
 <div class="reader">
 	<aside class="toc" aria-label="İçindekiler">
-		<p class="toc-title">İçindekiler</p>
-		{#each pages as p}
-			<button class="toc-link" class:active={activePage === p.page} onclick={() => scrollTo(p.page)}>
-				<span class="toc-num">{String(p.page).padStart(2, '0')}</span>
-				<span class="toc-text">{lang === 'tr' ? p.title_tr : p.title_en}</span>
-			</button>
-		{/each}
+		<button class="toc-toggle" aria-expanded={tocOpen} aria-controls="toc-list" onclick={() => (tocOpen = !tocOpen)}>
+			<span class="toc-title">İçindekiler</span>
+			<span class="toc-caret" aria-hidden="true">{tocOpen ? '▲' : '▼'}</span>
+		</button>
+		<div class="toc-list" class:open={tocOpen} id="toc-list">
+			{#each pages as p}
+				<button class="toc-link" class:active={activePage === p.page} onclick={() => { scrollTo(p.page); tocOpen = false; }}>
+					<span class="toc-num">{String(p.page).padStart(2, '0')}</span>
+					<span class="toc-text">{lang === 'tr' ? p.title_tr : p.title_en}</span>
+				</button>
+			{/each}
+		</div>
 	</aside>
 
 	<div class="pages">
@@ -80,7 +86,10 @@
 <style>
 	.reader { display: grid; grid-template-columns: 210px 1fr; gap: 1.5rem; align-items: start; }
 	.toc { position: sticky; top: 1rem; max-height: calc(100vh - 2rem); overflow-y: auto; padding: 0.6rem; background: var(--bg-2); border: 1px solid var(--border); border-radius: var(--radius); scrollbar-width: thin; }
-	.toc-title { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-3); margin: 0 0 0.5rem; padding-bottom: 0.4rem; border-bottom: 1px solid var(--border); }
+	.toc-toggle { display: flex; align-items: center; justify-content: space-between; width: 100%; background: none; border: none; font: inherit; cursor: default; padding: 0 0 0.4rem; margin-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
+	.toc-title { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-3); margin: 0; }
+	.toc-caret { display: none; color: var(--text-3); font-size: 0.7rem; }
+	.toc-list { display: flex; flex-direction: column; }
 	.toc-link { display: flex; gap: 0.5rem; align-items: baseline; width: 100%; text-align: left; background: none; border: none; cursor: pointer; padding: 0.3rem 0.4rem; border-radius: 5px; color: var(--text-3); transition: color 0.12s, background 0.12s; }
 	.toc-link:hover { background: var(--bg-3); color: var(--text-1); }
 	.toc-link.active { background: var(--bg-3); color: var(--accent); }
@@ -105,6 +114,10 @@
 
 	@media (max-width: 720px) {
 		.reader { grid-template-columns: 1fr; }
-		.toc { display: none; }
+		.toc { position: static; max-height: none; margin-bottom: 0.5rem; }
+		.toc-toggle { cursor: pointer; margin-bottom: 0; }
+		.toc-caret { display: inline; }
+		.toc-list { display: none; max-height: 60vh; overflow-y: auto; margin-top: 0.5rem; }
+		.toc-list.open { display: flex; }
 	}
 </style>

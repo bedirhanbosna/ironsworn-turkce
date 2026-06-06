@@ -38,17 +38,24 @@
 		return e.href ?? `${typeHref[e.type] ?? '/'}#${e.id.split('/').pop()}`;
 	}
 
-	const cards: { href: string; icon: IconName; lk: string; dk: string }[] = [
-		{ href: '/kural-kitabi', icon: 'book',       lk: 'home_rulebook', dk: 'home_rulebook_d' },
-		{ href: '/moves',    icon: 'crossed-swords', lk: 'home_moves',    dk: 'home_moves_d'    },
-		{ href: '/oracles',  icon: 'crystal-ball',   lk: 'home_oracles',  dk: 'home_oracles_d'  },
-		{ href: '/assets',   icon: 'scroll',         lk: 'home_assets',   dk: 'home_assets_d'   },
-		{ href: '/npcs',     icon: 'skull',          lk: 'home_npcs',     dk: 'home_npcs_d'     },
-		{ href: '/truths',   icon: 'earth',          lk: 'home_truths',   dk: 'home_truths_d'   },
-		{ href: '/rules',    icon: 'scales',         lk: 'home_rules',    dk: 'home_rules_d'    },
-		{ href: '/atlas',    icon: 'compass',        lk: 'home_atlas',    dk: 'home_atlas_d'    },
-		{ href: '/docs',     icon: 'papers',         lk: 'home_docs',     dk: 'home_docs_d'     },
+	type Card = { href: string; icon: IconName; lk: string; dk: string };
+	// Nav ile aynı moda göre gruplanır (Başla hero CTA olduğundan kart değil).
+	const cardGroups: { key: 'navg_read' | 'navg_reference'; cards: Card[] }[] = [
+		{ key: 'navg_read', cards: [
+			{ href: '/kural-kitabi', icon: 'book',   lk: 'home_rulebook', dk: 'home_rulebook_d' },
+			{ href: '/belgeler',     icon: 'papers', lk: 'nav_documents', dk: 'home_documents_d' },
+		] },
+		{ key: 'navg_reference', cards: [
+			{ href: '/moves',   icon: 'crossed-swords', lk: 'home_moves',   dk: 'home_moves_d'   },
+			{ href: '/oracles', icon: 'crystal-ball',   lk: 'home_oracles', dk: 'home_oracles_d' },
+			{ href: '/assets',  icon: 'scroll',         lk: 'home_assets',  dk: 'home_assets_d'  },
+			{ href: '/npcs',    icon: 'skull',          lk: 'home_npcs',    dk: 'home_npcs_d'    },
+			{ href: '/rules',   icon: 'scales',         lk: 'home_rules',   dk: 'home_rules_d'   },
+			{ href: '/truths',  icon: 'earth',          lk: 'home_truths',  dk: 'home_truths_d'  },
+			{ href: '/atlas',   icon: 'compass',        lk: 'home_atlas',   dk: 'home_atlas_d'   },
+		] },
 	];
+	const resourcesCard: Card = { href: '/kaynaklar', icon: 'village', lk: 'nav_resources', dk: 'home_resources_d' };
 </script>
 
 <div class="home">
@@ -91,14 +98,24 @@
 		</ul>
 	{:else}
 		<p class="browse-label">{ui(lang, 'home_browse')}</p>
-		<div class="nav-cards">
-			{#each cards as card}
-				<a href={card.href} class="nav-card">
-					<span class="icon icon-medallion"><Icon name={card.icon} size={24} /></span>
-					<strong>{ui(lang, card.lk as any)}</strong>
-					<span class="card-desc">{ui(lang, card.dk as any)}</span>
-				</a>
-			{/each}
+		{#each cardGroups as group}
+			<p class="group-label">{ui(lang, group.key)}</p>
+			<div class="nav-cards">
+				{#each group.cards as card}
+					<a href={card.href} class="nav-card">
+						<span class="icon icon-medallion"><Icon name={card.icon} size={24} /></span>
+						<strong>{ui(lang, card.lk as any)}</strong>
+						<span class="card-desc">{ui(lang, card.dk as any)}</span>
+					</a>
+				{/each}
+			</div>
+		{/each}
+		<div class="nav-cards trailing">
+			<a href={resourcesCard.href} class="nav-card">
+				<span class="icon icon-medallion"><Icon name={resourcesCard.icon} size={24} /></span>
+				<strong>{ui(lang, resourcesCard.lk as any)}</strong>
+				<span class="card-desc">{ui(lang, resourcesCard.dk as any)}</span>
+			</a>
 		</div>
 	{/if}
 </div>
@@ -192,7 +209,12 @@
 		text-align: center; font-size: 0.72rem; letter-spacing: 0.18em;
 		text-transform: uppercase; color: var(--text-3); margin-bottom: 1rem;
 	}
+	.group-label {
+		font-size: 0.64rem; letter-spacing: 0.16em; text-transform: uppercase;
+		color: var(--text-3); opacity: 0.8; margin: 1.4rem 0 0.6rem;
+	}
 	.nav-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 0.75rem; }
+	.nav-cards.trailing { margin-top: 0.75rem; }
 	.nav-card {
 		display: flex; flex-direction: column; gap: 0.4rem;
 		padding: 1.15rem 1.1rem; border-radius: var(--radius);
