@@ -10,21 +10,85 @@ Bu dosya bu repoda çalışırken Claude'un uyması gereken **kalıcı talimatla
 1. **Datasworn arayüz metinleri** — `data/i18n/classic/strings.todo.json`
    (`{ "<key>": { "en": "...", "tr": "..." } }`). Çeviri = her kaydın `tr`
    alanını doldurmak. `npm run build-i18n` bunlardan `tr.json` overlay'ini derler
-   ve **token bütünlüğünü** denetler.
-2. **PDF kural kitabı** — `data/pdf/rulebook.json` (535 blok; her blokta
-   `text_en` ve doldurulacak `text_tr`).
+   ve **token bütünlüğünü** denetler. Bu overlay çalışma anında `id#field`
+   anahtarıyla EN kaynağın üzerine bindirilir (aşağıya bak).
+2. **Sayfa-sayfa kural kitabı ve belgeler** — gösterilen kaynak
+   `src/lib/content/rulebook/*.ts` ve `src/lib/content/docs/*.ts` içindeki
+   `RulebookPage[]` dizileridir (`text_tr` doldurulur). Bunların **hangi dosyadan
+   geldiği ve nasıl üretildiği** "Rulebook/Belge Hattı" bölümünde anlatılır —
+   `data/pdf/rulebook.json` bu hattın *eski, kullanılmayan* bir çıktısıdır,
+   çalışma anında okunmaz.
 
 Her iki yüzey de **`data/i18n/glossary.md`** sözlüğüne uymak zorundadır.
 
 ### Komutlar
-- `npm run dev` / `npm run build` — uygulama (önce `copy-data` çalışır)
+- `npm run dev` / `npm run build` — uygulama. İkisi de önce `copy-data` (veri →
+  `static/`) sonra `build-content-index` (sayfa başlıkları → arama index'i) çalıştırır.
 - `npm run build-i18n` — `strings.todo.json` → `tr.json` (token/link denetimi yapar)
-- `npm run extract` / `npm run extract-pdf` — kaynak metin çıkarımı
-- `npm run check` — svelte-check
+- `npm run check` — svelte-check (tip denetimi); test paketi yok.
+- `npm run extract` — datasworn'dan çevrilecek string'leri çıkar (`strings.todo.json`)
+- `npm run extract-pdf` — Rulebook PDF'ini section'lara böl (eski hat; aşağıya bak)
+- `npm run fetch-source` — datasworn kaynak JSON'unu çek
 
 ### Çeviriyi başlatmak
 Bir parçayı (chunk / dosya / key aralığı) çevirmek için **`/ceviri`** skill'ini
 kullan. Aşağıdaki kurallar her zaman geçerlidir.
+
+---
+
+## Mimari
+
+Tamamen statik bir **SvelteKit 2 + Svelte 5 (runes)** PWA'sı; `adapter-static`
+(`fallback: index.html`) ile SPA olarak derlenir, Docker + nginx ile servis edilir.
+Tüm sayfalar `+layout.ts`'te `prerender = true`, `ssr = false` — yani veri **tarayıcıda**
+`fetch` ile yüklenir, SSR yoktur.
+
+### Veri akışı ve çalışma-anı çeviri (datasworn yüzeyi)
+- Kaynak gerçek (source of truth): `data/source/classic.json` (datasworn) +
+  `data/i18n/classic/tr.json` (overlay). `copy-data.js` bunları `static/data/`'ya,
+  PDF'leri `Oyun dataları/*.pdf` → `static/pdf/`'e kopyalar.
+- `src/lib/data/loader.ts` çalışma anında `classic.json` ve `tr_classic.json`'ı
+  çeker, **birleştirmez**: çeviri overlay'i `t(id, field, en, overlay)` ile
+  `overlay["<_id>#<field>"] ?? en` olarak okunur. UI dili `en` ise overlay atlanır.
+  Bu yüzden datasworn upstream değişse de çeviri kopmaz; eksik çeviri EN'e düşer.
+- Çeviri **anahtarı** datasworn `_id` + `#` + alan yoludur (örn.
+  `classic/moves/face_danger#trigger.text`, dizi için `...#text.0`). `build-i18n.ts`
+  EN/TR token ve link-hedefi tutarlılığını burada denetler.
+- Dil durumu: `src/lib/i18n/lang.svelte.ts` (runes store, localStorage, TR varsayılan).
+  Sabit UI etiketleri `src/lib/i18n/ui.ts`'te (datasworn'da olmayan menü/başlık metni).
+- Arama: `loader.ts:buildSearchIndex` tüm tür + sayfa başlıklarından tek bir index
+  kurar; `normalize.ts` Türkçe-duyarlı eşleştirme yapar (`ı→i`, aksan ayırma).
+
+### Rulebook/Belge Hattı (sayfa-sayfa okuyucu — kafa karıştıran kısım)
+Okuyucunun (`RulebookReader.svelte`) gösterdiği veri **datasworn'dan bağımsızdır**
+ve elle bakılan TS dosyalarında yaşar. Bir bölüm/belge eklemenin/çevirmenin yolu:
+
+1. **Kaynak çıkarımı** → `data/pdf/wip-*/<ad>_*.json` (`{ page, img, en }` —
+   PDF'ten sayfa-sayfa, gerekirse batch'lere bölünmüş: `_b1`, `_b2`…).
+2. **`/ceviri` ile çeviri** → `_out_*.json` (`{ page, img, title_en, title_tr,
+   text_en, text_tr }`; düz metin Markdown'a normalize edilir).
+3. **Baking** → batch'ler birleşip `src/lib/content/rulebook/<slug>.ts` (veya
+   `docs/<slug>.ts`) içinde `export const <slug>Pages: RulebookPage[]` olur.
+   Bu TS dosyaları **gerçeğin kaynağıdır**; `_out_*.json`'lar ara üründür.
+4. **Kayıt** → bölüm için `rulebook/index.ts`'teki `chapters[]`'a `available: true`
+   + tembel `load: () => import(...)` ekle; belge için `docs/index.ts`'teki
+   `documents[]`'a ekle.
+5. `build-content-index.ts` bu TS'lerin `title_en`/`title_tr`'lerini toplayıp
+   `static/data/content_index.json` üretir → ana sayfa araması iki dilli derin-link
+   verir (`/kural-kitabi?ch=<slug>&p=<page>`).
+
+Notlar:
+- Sayfa görselleri: `static/rulebook/<slug>/pNNN.webp` (rulebook),
+  `static/belgeler/<slug>/pNNN.webp` (docs). PWA'da precache **dışında**, runtime
+  cache'lenir (`vite.config.ts`).
+- Basılı sayfa → PDF iç sayfası ofseti: `PdfRef.svelte`'te sabit **+11**.
+- `extract-pdf.ts` → `data/pdf/rulebook.json` heading-section tabanlı **eski** bir
+  yaklaşımdır; okuyucu bunu kullanmaz, yeni çeviride referans alma.
+
+### Dağıtım
+`Dockerfile` Node ile derler → nginx ile servis eder (SPA fallback, port 80),
+Coolify push'ta otomatik yeniden derler. PDF'ler repoda (`Oyun dataları/`) olduğundan
+ek yapılandırma gerekmez.
 
 ---
 

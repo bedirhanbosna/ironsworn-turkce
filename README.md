@@ -21,7 +21,9 @@ tek yerde, Türkçe.
 
 1. **Datasworn arayüz metinleri** — `data/i18n/classic/strings.todo.json` (`{ "<key>": { "en", "tr" } }`).
    `npm run build-i18n` bunlardan `tr.json` overlay'ini derler ve **token/link bütünlüğünü** denetler.
-2. **PDF kural kitabı** — `data/pdf/rulebook.json` (`text_en` → `text_tr`). *(Ayrı, sürmekte olan iş.)*
+2. **Sayfa-sayfa kural kitabı & belgeler** — `src/lib/content/rulebook/*.ts` ve
+   `src/lib/content/docs/*.ts` içindeki `RulebookPage[]` dizileri (`text_tr` doldurulur).
+   PDF'ten çıkarım → `/ceviri` → TS'e baking akışı için aşağıdaki **Uygulama Mimarisi**'ne bak.
 
 Çeviri yaparken `data/i18n/glossary.md` kanoniktir; bir terimin karşılığı oradaysa birebir kullanılır.
 
@@ -47,6 +49,32 @@ npm run build-i18n   # strings.todo.json → tr.json (token/link denetimiyle)
 npm run fetch-source # datasworn kaynak verisini çek
 npm run extract      # çevrilecek string'leri çıkar
 ```
+
+## ✦ Uygulama Mimarisi
+
+Tamamen statik bir **SvelteKit 2 / Svelte 5 (runes)** PWA'sı. Tüm sayfalar
+`prerender = true`, `ssr = false` — veri tarayıcıda `fetch` ile yüklenir.
+
+**Çalışma-anı çeviri (datasworn yüzeyi).** Kaynak veri (`data/source/classic.json`) ve
+çeviri overlay'i (`data/i18n/classic/tr.json`) ayrı tutulur ve **birleştirilmez**:
+`src/lib/data/loader.ts`, `overlay["<datasworn _id>#<alan>"] ?? en` mantığıyla okur. Bu
+sayede upstream datasworn güncellenince çeviri kopmaz, eksik çeviriler İngilizceye düşer.
+`build-i18n.ts` bu anahtarlarda EN/TR token ve link-hedefi tutarlılığını denetler. Dil
+durumu `lang.svelte.ts`'te (TR varsayılan, localStorage); sabit menü/başlık metni `ui.ts`'te.
+Arama `normalize.ts` ile Türkçe-duyarlıdır (`ı→i`, aksan ayırma).
+
+**Sayfa-sayfa okuyucu (kural kitabı & belgeler).** datasworn'dan bağımsızdır; gösterilen
+veri elle bakılan TS dosyalarında yaşar. Akış:
+
+1. PDF'ten sayfa-sayfa çıkarım → `data/pdf/wip-*/<ad>_*.json` (`{ page, img, en }`).
+2. `/ceviri` ile çeviri → `_out_*.json` (`title_*`/`text_*`, Markdown'a normalize).
+3. **Baking** → `src/lib/content/{rulebook,docs}/<slug>.ts` içinde `RulebookPage[]`
+   (gerçeğin kaynağı burasıdır), `index.ts`'e `available: true` + tembel `load` ile kaydedilir.
+4. `build-content-index.ts` başlıkları toplar → ana sayfada iki dilli, derin-linkli arama.
+
+Sayfa görselleri `static/{rulebook,belgeler}/<slug>/pNNN.webp` (PWA'da runtime-cache).
+`data/pdf/rulebook.json` ve `npm run extract-pdf` bu hattın **eski** bir sürümüdür; okuyucu
+kullanmaz.
 
 ## ✦ Dağıtım (Coolify)
 
