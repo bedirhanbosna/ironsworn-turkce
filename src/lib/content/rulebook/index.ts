@@ -15,7 +15,8 @@ export const chapters: Chapter[] = [
 		load: () => import('$lib/content/rulebook/dusmanlar.js').then((m) => m.dusmanlarPages) },
 	{ num: 6, slug: 'kehanetler', title_en: 'Oracles', title_tr: 'Kehanetler', available: true,
 		load: () => import('$lib/content/rulebook/kehanetler.js').then((m) => m.kehanetlerPages) },
-	{ num: 7, slug: 'derinlemesine', title_en: 'Gameplay in Depth', title_tr: 'Derinlemesine Oyun', available: false },
+	{ num: 7, slug: 'derinlemesine', title_en: 'Gameplay in Depth', title_tr: 'Derinlemesine Oyun', available: true,
+		load: () => import('$lib/content/rulebook/derinlemesine.js').then((m) => m.derinlemesinePages) },
 ];
 
 export function getChapter(slug: string): Chapter | undefined {
