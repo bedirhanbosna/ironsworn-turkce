@@ -1,7 +1,15 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
 	import { useRegisterSW } from 'virtual:pwa-register/svelte';
 
 	const { needRefresh, updateServiceWorker } = useRegisterSW();
+
+	onMount(() => {
+		// Yeni SW kontrolü devralınca sayfayı otomatik yenile — kullanıcı etkileşimi gerektirmez
+		navigator.serviceWorker?.addEventListener('controllerchange', () => {
+			window.location.reload();
+		});
+	});
 </script>
 
 {#if $needRefresh}
