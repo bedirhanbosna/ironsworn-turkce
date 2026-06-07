@@ -152,44 +152,58 @@
 
 <style>
 	.viewer-shell {
-		position: fixed;
-		inset: 0;
-		z-index: 100;
 		display: flex;
 		flex-direction: column;
-		background: #111;
-		color: #eee;
+		min-height: calc(100dvh - 60px);
+		background: var(--bg-1, #0f0f18);
+		color: var(--text-1, #eee);
+		border-radius: 10px;
+		border: 1px solid var(--border, #2a2a3a);
 		overflow: hidden;
+		/* Nötr bir zeminde derin gölge */
+		box-shadow:
+			0 2px 8px rgba(0,0,0,0.4),
+			0 0 0 1px rgba(255,255,255,0.03) inset;
 	}
 
-	/* Üst araç çubuğu */
+	/* ── Toolbar ── */
 	.toolbar {
 		display: flex;
 		align-items: center;
-		gap: 0.5rem;
-		padding: 0.5rem 0.75rem;
-		background: #1c1c1c;
-		border-bottom: 1px solid #333;
+		gap: 0.6rem;
+		padding: 0.55rem 0.9rem;
+		background: var(--bg-2, #16161f);
+		border-bottom: 1px solid var(--border, #2a2a3a);
 		flex-shrink: 0;
-		min-height: 48px;
 	}
 
 	.back-btn {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.3rem;
 		background: none;
-		border: 1px solid #444;
+		border: 1px solid color-mix(in srgb, var(--accent, #c9a84c) 40%, transparent);
 		color: var(--accent, #c9a84c);
 		border-radius: 6px;
-		padding: 0.25rem 0.6rem;
+		padding: 0.28rem 0.7rem;
 		cursor: pointer;
-		font-size: 0.85rem;
+		font-size: 0.8rem;
+		font-family: var(--font-display, serif);
+		letter-spacing: 0.04em;
 		white-space: nowrap;
+		transition: background 0.15s, border-color 0.15s;
 	}
-	.back-btn:hover { border-color: var(--accent, #c9a84c); }
+	.back-btn:hover {
+		background: color-mix(in srgb, var(--accent, #c9a84c) 10%, transparent);
+		border-color: var(--accent, #c9a84c);
+	}
 
 	.title {
 		flex: 1;
-		font-size: 0.8rem;
-		color: #888;
+		font-size: 0.72rem;
+		letter-spacing: 0.1em;
+		text-transform: uppercase;
+		color: var(--text-3, #666);
 		overflow: hidden;
 		text-overflow: ellipsis;
 		white-space: nowrap;
@@ -198,25 +212,31 @@
 	.page-info {
 		display: flex;
 		align-items: center;
-		gap: 0.25rem;
+		gap: 0.3rem;
 		flex-shrink: 0;
+		background: var(--bg-3, #1e1e2a);
+		border: 1px solid var(--border, #2a2a3a);
+		border-radius: 6px;
+		padding: 0.18rem 0.5rem;
 	}
 
 	.page-input {
-		width: 3.5rem;
-		padding: 0.2rem 0.3rem;
-		background: #2a2a2a;
-		border: 1px solid #444;
-		border-radius: 4px;
-		color: #eee;
-		font-size: 0.85rem;
+		width: 2.8rem;
+		background: none;
+		border: none;
+		color: var(--text-1, #eee);
+		font-size: 0.82rem;
 		text-align: center;
+		outline: none;
 	}
 	.page-input::-webkit-inner-spin-button { opacity: 0; }
 
-	.page-sep { font-size: 0.8rem; color: #888; }
+	.page-sep {
+		font-size: 0.78rem;
+		color: var(--text-3, #666);
+	}
 
-	/* PDF alanı */
+	/* ── PDF alanı ── */
 	.pdf-container {
 		flex: 1;
 		overflow-y: auto;
@@ -224,53 +244,78 @@
 		display: flex;
 		justify-content: center;
 		align-items: flex-start;
-		background: #222;
+		padding: 1.5rem 1rem;
+		background:
+			radial-gradient(ellipse 80% 60% at 50% 0%, color-mix(in srgb, var(--accent, #c9a84c) 4%, transparent), transparent),
+			var(--bg-1, #0f0f18);
 		-webkit-overflow-scrolling: touch;
 	}
 
 	.pdf-canvas {
 		display: block;
 		max-width: 100%;
-		background: #fff;
+		border-radius: 4px;
+		box-shadow:
+			0 4px 24px rgba(0,0,0,0.6),
+			0 1px 0 rgba(255,255,255,0.06) inset,
+			0 0 0 1px rgba(0,0,0,0.4);
 	}
 
 	.state-msg {
 		align-self: center;
-		padding: 2rem;
-		color: #aaa;
-		font-size: 1rem;
+		padding: 3rem 2rem;
+		color: var(--text-3, #666);
+		font-size: 0.95rem;
+		text-align: center;
+		line-height: 1.6;
 	}
-	.state-msg.error { color: #e07070; }
+	.state-msg.error { color: #c97070; }
 
-	/* Alt navigasyon */
+	/* ── Alt navigasyon ── */
 	.nav-bar {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		padding: 0.5rem 1rem;
-		background: #1c1c1c;
-		border-top: 1px solid #333;
+		padding: 0.55rem 0.9rem;
+		background: var(--bg-2, #16161f);
+		border-top: 1px solid var(--border, #2a2a3a);
 		flex-shrink: 0;
-		min-height: 52px;
+		gap: 0.5rem;
 	}
 
 	.nav-btn {
-		background: #2a2a2a;
-		border: 1px solid #444;
-		color: #eee;
+		display: inline-flex;
+		align-items: center;
+		gap: 0.25rem;
+		background: var(--bg-3, #1e1e2a);
+		border: 1px solid var(--border, #2a2a3a);
+		color: var(--text-2, #ccc);
 		border-radius: 6px;
 		padding: 0.4rem 1rem;
 		cursor: pointer;
-		font-size: 0.9rem;
-		min-width: 90px;
+		font-size: 0.85rem;
+		min-width: 84px;
+		justify-content: center;
 		touch-action: manipulation;
+		transition: background 0.15s, border-color 0.15s, color 0.15s;
 	}
-	.nav-btn:disabled { opacity: 0.35; cursor: default; }
-	.nav-btn:not(:disabled):hover { border-color: var(--accent, #c9a84c); }
-	.nav-btn:not(:disabled):active { background: #3a3a3a; }
+	.nav-btn:disabled { opacity: 0.28; cursor: default; }
+	.nav-btn:not(:disabled):hover {
+		border-color: var(--accent, #c9a84c);
+		color: var(--accent, #c9a84c);
+	}
+	.nav-btn:not(:disabled):active { background: var(--bg-1, #0f0f18); }
 
 	.nav-label {
-		font-size: 0.85rem;
-		color: #aaa;
+		font-size: 0.78rem;
+		color: var(--text-3, #666);
+		letter-spacing: 0.06em;
+		text-align: center;
+	}
+
+	/* Mobil: küçük padding */
+	@media (max-width: 600px) {
+		.pdf-container { padding: 0.75rem 0.4rem; }
+		.nav-btn { min-width: 70px; padding: 0.4rem 0.6rem; font-size: 0.8rem; }
 	}
 </style>
