@@ -80,7 +80,8 @@
 			const startPage = Math.min(Math.max(1, initialPage), totalPages);
 			loading = false;
 			await goToPage(startPage);
-		} catch {
+		} catch (e) {
+			console.error('[pdf-viewer] getDocument failed:', e);
 			errorMsg = 'PDF yüklenemedi. Dosya mevcut değil ya da erişilemiyor.';
 			loading = false;
 		}
