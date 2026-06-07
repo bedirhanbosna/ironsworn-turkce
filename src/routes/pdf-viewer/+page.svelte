@@ -1,7 +1,6 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import { onMount, tick } from 'svelte';
 	import { page } from '$app/stores';
-	import { goto } from '$app/navigation';
 
 	let canvas = $state<HTMLCanvasElement | null>(null);
 	let container = $state<HTMLDivElement | null>(null);
@@ -25,9 +24,10 @@
 		}
 		rendering = true;
 
+		await tick(); // DOM güncellemesinin tamamlanmasını bekle
 		const pdfPage = await pdfDoc.getPage(pageNum);
 		const dpr = window.devicePixelRatio || 1;
-		const containerWidth = container.clientWidth;
+		const containerWidth = container.getBoundingClientRect().width || window.innerWidth;
 		const baseViewport = pdfPage.getViewport({ scale: 1 });
 		const scale = (containerWidth / baseViewport.width) * dpr;
 		const viewport = pdfPage.getViewport({ scale });
@@ -80,6 +80,7 @@
 			totalPages = pdfDoc.numPages;
 			const startPage = Math.min(Math.max(1, initialPage), totalPages);
 			loading = false;
+			await tick(); // canvas DOM'a gelsin
 			await goToPage(startPage);
 		} catch (e) {
 			console.error('[pdf-viewer] getDocument failed:', e);
