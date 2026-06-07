@@ -75,7 +75,8 @@
 		pdfjsLib.GlobalWorkerOptions.workerSrc = workerUrl.default;
 
 		try {
-			pdfDoc = await pdfjsLib.getDocument({ url: fileParam }).promise;
+			// disableRange/Stream: servis worker + Cloudflare proxy range request bozulmasını önler
+			pdfDoc = await pdfjsLib.getDocument({ url: fileParam, disableRange: true, disableStream: true }).promise;
 			totalPages = pdfDoc.numPages;
 			const startPage = Math.min(Math.max(1, initialPage), totalPages);
 			loading = false;
