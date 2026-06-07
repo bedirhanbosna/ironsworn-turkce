@@ -4,14 +4,15 @@
 	const PDF_PAGE_OFFSET = 11;
 
 	let { page }: { page?: number } = $props();
+
+	const viewerHref = (p: number) =>
+		`/pdf-viewer?file=/pdf/rulebook.pdf&page=${p + PDF_PAGE_OFFSET}`;
 </script>
 
 {#if page}
 	<a
 		class="pdf-ref"
-		href="/pdf/rulebook.pdf#page={page + PDF_PAGE_OFFSET}"
-		target="_blank"
-		rel="noopener"
+		href={viewerHref(page)}
 		title="Kural kitabında aç (s.{page})"
 	>
 		📖 s.{page}
