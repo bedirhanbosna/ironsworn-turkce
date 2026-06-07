@@ -5,6 +5,7 @@
 	import { loadTranslations } from '$lib/i18n/translate.js';
 	import { ui } from '$lib/i18n/ui.js';
 	import Icon from '$lib/components/Icon.svelte';
+	import UpdatePrompt from '$lib/components/UpdatePrompt.svelte';
 	import '../app.css';
 
 	let { children } = $props();
@@ -90,6 +91,8 @@
 	<main>
 		{@render children()}
 	</main>
+
+	<UpdatePrompt />
 
 	<footer>
 		<p class="f-main">
